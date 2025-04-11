@@ -1,13 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
 
-import Header from './src/components/Header';
+import Header from "./src/components/Header";
+import Banner from "./src/components/Banner";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app! teste</Text>
-      <Text style={{ fontFamily: "Gilda Regular", fontWeight: 1000}}>Open up App example text bla bla bla TESTE</Text>
+      <Header />
+      <Banner />
       <StatusBar style="auto" />
     </View>
   );
@@ -16,8 +18,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#1E1E1E",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

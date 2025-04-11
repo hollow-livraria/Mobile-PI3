@@ -5,12 +5,11 @@
 
 import {View, StyleSheet, Text} from "react-native"
 import { Image } from 'expo-image'
-import Entypo from '@expo/vector-icons/Entypo'
 
-export default function Header() {
+export default function Banner() {
     return (
         <View style={styles.container}>
-            <View style={styles.search}></View>
+                  <Image style={styles.vinhoTinto} source="../imgs/vinho_tinto.png" />
         </View>
 
     )
@@ -18,20 +17,17 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     container: {
-        display: "flex",
-        justifyContent: "center",
-        height: 100,
+        height: 200,
         width: "100%",
-        backgroundColor: "#fff",
-        padding: 16,
         position: "absolute",
-        top: 0
+        top: 100,
+        backgroundColor: "red"
     },
-    search: {
-        height: 40,
-        width: "50%",
-        backgroundColor: "green",
-        margin: 20
-    }
-
+    vinhoTinto: {
+        height: 200,
+        width: "100%",
+        position: "absolute",
+        top: 0,
+        backgroundColor: "blue"
+      },
 })
