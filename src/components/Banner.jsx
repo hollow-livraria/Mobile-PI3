@@ -9,7 +9,7 @@ import { Image } from "expo-image";
 export default function Banner() {
   return (
     <View style={styles.container}>
-      <Image style={styles.bannerImg} source="../assets/imgs/vinho_tinto.png" />
+      <Image style={styles.bannerImg} source={require("../../assets/imgs/vinho_tinto.png")} />
       <View style={styles.bannerTexts}>
         <Text style={styles.conheca}>Conheça Nossos:</Text>
         <Text style={styles.vinhoTinto}>Vinhos Tintos</Text>
