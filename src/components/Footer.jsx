@@ -7,10 +7,9 @@ import { View, StyleSheet, Text, TextInput } from "react-native";
 import { Image } from "expo-image";
 import Entypo from "@expo/vector-icons/Entypo";
 
-export default function Header() {
+export default function Footer() {
   return (
     <View style={styles.container}>
-      <TextInput style={styles.search} placeholder={"teste"} />
     </View>
   );
 }
@@ -19,20 +18,11 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     justifyContent: "center",
-    height: 120,
+    height: 70,
     width: "100%",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "red",
     padding: 15,
     position: "absolute",
-    top: 0,
-  },
-  search: {
-    height: 35,
-    width: "65%",
-    backgroundColor: "#EAE5E1",
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
+    bottom: 0
   },
 });
