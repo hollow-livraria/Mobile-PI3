@@ -12,15 +12,11 @@ export default function App() {
     <View style={styles.container}>
       <Header />
       <Banner />
-      <View style={styles.galeria}>
+      {/* <View style={styles.galeria}>
         <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
         <View style={styles.galeriaCards}>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
         </View>
-      </View>
+      </View> */}
       <Footer />
       <StatusBar style="auto" />
     </View>

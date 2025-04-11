@@ -1,7 +1,7 @@
 // ᲼᲼᲼᲼᲼᲼᲼᲼᲼᲼                 ᲼╱|、
 //                           (˚ˎ 。7
 //                            |、˜〵
-//                           じしˍ,)ノ
+//                            じしˍ,)ノ
 
 import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
@@ -9,7 +9,7 @@ import { Image } from "expo-image";
 export default function Banner() {
   return (
     <View style={styles.container}>
-      <Image style={styles.bannerImg} source="https://picsum.photos/seed/696/3000/2000" />
+      <Image style={styles.bannerImg} source="../assets/imgs/vinho_tinto.png" />
       <View style={styles.bannerTexts}>
         <Text style={styles.conheca}>Conheça Nossos:</Text>
         <Text style={styles.vinhoTinto}>Vinhos Tintos</Text>
@@ -25,29 +25,30 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     top: 120,
-    backgroundColor: "red",
-    border: "1px solid blue"
   },
   bannerImg: {
     height: 200,
     width: "100%",
     position: "absolute",
     top: 0,
-    border: "1px solid white"
   },
   bannerTexts: {
-    border: "1px solid black",
     width: "50%",
     margin: 20,
     gap: 10
   },
   conheca: {
-    fontSize: 5
+    fontSize: 12,
+    color: "white"
   },
   vinhoTinto: {
-    fontSize: 20
+    fontSize: 25,
+    color: "white"
+
   },
   desc: {
-    fontSize: 10
+    fontSize: 15,
+    color: "white"
+
   }
 });
