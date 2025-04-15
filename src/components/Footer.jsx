@@ -1,7 +1,7 @@
 // ᲼᲼᲼᲼᲼᲼᲼᲼᲼᲼                 ᲼╱|、
 //                           (˚ˎ 。7
 //                            |、˜〵
-//                           じしˍ,)ノ
+//                            じしˍ,)ノ
 
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { Image } from "expo-image";
