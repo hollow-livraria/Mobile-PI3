@@ -12,6 +12,7 @@ export default function App() {
     <View style={styles.container}>
       <Header />
       <Banner />
+      
       {/* <View style={styles.galeria}>
         <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
         <View style={styles.galeriaCards}>
