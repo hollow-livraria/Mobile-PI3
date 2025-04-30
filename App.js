@@ -12,7 +12,7 @@ export default function App() {
     <View style={styles.container}>
       <Header />
       <Banner />
-      
+
       {/* <View style={styles.galeria}>
         <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
         <View style={styles.galeriaCards}>
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#1E1E1E",
     alignItems: "center",
-    justifyContent: "center",
   },
   galeria: {
     widht: "100%",

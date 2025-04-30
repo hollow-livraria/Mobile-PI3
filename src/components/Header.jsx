@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#000002",
     padding: 15,
-    position: "absolute",
-    top: 0,
+    // position: "absolute",
+    // top: 0,
   },
   searchBody: {
     height: 35,
