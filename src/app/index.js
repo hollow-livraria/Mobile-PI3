@@ -2,10 +2,10 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Image } from "expo-image";
 
-import Header from "./src/components/Header";
-import Banner from "./src/components/Banner";
-import Card from "./src/components/Card";
-import Footer from "./src/components/Footer";
+import Header from "../components/Header";
+import Banner from "../components/Banner";
+import Card from "../components/Card";
+import Footer from "../components/Footer";
 
 export default function App() {
   return (
