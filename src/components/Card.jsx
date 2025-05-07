@@ -9,7 +9,13 @@ import { Image } from "expo-image";
 export default function Card() {
   return (
     <View style={styles.cardBody}>
-      
+      <Image
+        source={require("../../assets/imgs/vinhoTest.png")}
+        style={{ width: 100, height: 100, borderRadius: 5 }}
+      />
+      <View style={styles.bar}></View>
+      <Text>vinho muito legal</Text>
+      <Text>R$ 10,00</Text>
     </View>
   );
 }
@@ -17,11 +23,18 @@ export default function Card() {
 const styles = StyleSheet.create({
   cardBody: {
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     height: 200,
     width: 170,
-    backgroundColor: "blue",
+    backgroundColor: "#EAE5E1",
     padding: 20,
-    border: "1px solid white"
+    borderRadius: 5,
   },
-
+  bar: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "black",
+    margin: 10
+  }
 });

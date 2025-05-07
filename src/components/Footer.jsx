@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000002",
     padding: 15,
     position: "absolute",
-    bottom: 0,
+    bottom:-1,
     boxShadow: "0px -2px 10px rgba(255, 255, 255, 0.20)",
     borderTopWidth: 1,
   },
