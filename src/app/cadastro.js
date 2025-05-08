@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { Button, TextInput } from "react-native-web";
 import { TouchableOpacity } from "react-native";
@@ -6,19 +6,59 @@ import { useRouter } from 'expo-router';
 
 export default function Login() {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
-            <Text style={styles.p}>Acesse sua conta</Text>
-            <Text style={styles.h1}>Bem vindo de volta!</Text>
+            <Text style={styles.p}>Comece aqui</Text>
+            <Text style={styles.h1}>Crie sua conta!</Text>
             
             <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder="exemplo@gmail.com" />
+                <Text style={styles.label}>Nome Completo</Text>
+                <TextInput style={styles.input} placeholder="Digite seu nome completo..." />
             </View>
-            
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>E-mail</Text>
+                <TextInput style={styles.input} placeholder="E-maiexemplo@gmail.coml" />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>CPF</Text>
+                <TextInput style={styles.input} placeholder="Digite seu CPF..." />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Gênero</Text>
+                <select style={styles.selectInput}>
+                    <option value="masculino" style={styles.option}>Masculino</option>
+                    <option value="feminino" style={styles.option}>Feminino</option>
+                    <option value="outro" style={styles.option}>Outro</option>
+                    <option value="null" style={styles.option}>Prefiro não informar</option>
+                </select>
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Data de Nascimento</Text>
+                <TextInput style={styles.input} placeholder="Digite sua data de nascimento..." />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Número de Telefone </Text>
+                <TextInput style={styles.input} placeholder="Digite seu número de telefone..." />
+            </View>
+
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Senha</Text>
                 <TextInput style={styles.input} placeholder="Digite sua senha..."/>
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Confirme sua Senha</Text>
+                <TextInput style={styles.input} placeholder="Digite sua senha novamente..." />
+            </View>
+
+            <View style={styles.checkboxContainer}>
+                <input type="checkbox" style={styles.checkbox} />
+                <Text style={styles.checkboxLabel}>Eu aceito os termos de uso</Text>
             </View>
 
             <Text style={styles.p}>Esqueceu sua senha?</Text>
@@ -43,7 +83,7 @@ export default function Login() {
             </TouchableOpacity>
             
 
-        </View>
+        </ScrollView>
     );
 }
 
@@ -104,6 +144,16 @@ const styles = StyleSheet.create({
         color: "#3F0D09",
         placeholderTextColor: "#3f0d0988",
     },
+    selectInput: {
+        width: "100%",
+        height: 50,
+        backgroundColor: "#EAE5E1",
+        paddingLeft: 10,
+        borderRadius: 5,
+        fontFamily: "GildaDisplay",
+        fontSize: 16,
+        color: "#3F0D09",
+    },
     pSeparador: {
         color: "#EAE5E1",
         fontSize: 20,
@@ -157,6 +207,30 @@ const styles = StyleSheet.create({
         color: "#EAE5E1",
         fontSize: 16,
         textAlign: "center",
+        fontFamily: "GildaDisplay",
+    },
+    option: {
+        color: "#3F0D09",
+        fontSize: 16,
+        fontFamily: "GildaDisplay",
+        backgroundColor: "#EAE5E1",
+        padding: 10,
+    },
+    checkboxContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 20,
+        width: "80%",
+        alignSelf: "center",
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        marginRight: 10,
+    },
+    checkboxLabel: {
+        color: "#E1D5C2",
+        fontSize: 16,
         fontFamily: "GildaDisplay",
     },
 });
