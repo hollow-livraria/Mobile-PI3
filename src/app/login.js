@@ -6,6 +6,7 @@ export default function Login() {
     return (
         <View style={styles.container}>
             <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')}/>
+            <Text style={styles.p}>Acesse sua conta</Text>
             <Text style={styles.h1}>Bem vindo de volta!</Text>
             <TextInput style={styles.input} placeholder="exemplo@gmail.com"></TextInput>
             <TextInput style={styles.input} placeholder="Digite sua senha..."></TextInput>
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     },
     p: {
         color: "#E1D5C2",
-        fontSize: 22,
+        fontSize: 20,
         textAlign: "left",
         marginTop: 20,
         marginLeft: 40,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     },
     h1: {
         color: "#EAE5E1",
-        fontSize: 30,
+        fontSize: 28,
         textAlign: "left",
         marginTop: 10,
         marginLeft: 40,
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
         fontFamily: "GildaDisplay",
         fontSize: 16,
         color: "#3F0D09",
-        
+        inputMode: "text",
+        placeholderTextColor: "#3f0d0988",
     },
 }) 
