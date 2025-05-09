@@ -10,7 +10,6 @@ import Card from "./Card";
 export default function Galeria() {
   return (
     <View style={styles.galeria}>
-      <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
       <ScrollView contentContainerStyle={styles.galeriaCards}>
         <Card />
         <Card />
@@ -37,10 +36,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 20,
     marginTop: 20,
-  },
-  galeriaInfo: {
-    fontSize: "18px",
-    color: "white",
   },
   galeriaCards: {
     display: "flex",

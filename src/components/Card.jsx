@@ -16,7 +16,9 @@ export default function Card() {
         style={{ width: 100, height: 100, borderRadius: 5 }}
       />
       <View style={styles.bar}></View>
-      <Text style={styles.title}>vinho muito legal</Text>
+      <Text style={styles.title}>
+        vinho muito legal
+      </Text>
       <View style={styles.compra}>
         <Text>R$ 10,00</Text>
         <FontAwesomeIcon icon={faPlus} style={styles.add} />
@@ -49,9 +51,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%", 
+    width: "100%",
   },
   add: {
     marginTop: 5,
-  }
+  },
 });
