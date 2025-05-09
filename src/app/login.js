@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 40,
         fontFamily: "GildaDisplay",
+        marginBottom: '10%',
     },
     h1: {
         color: "#EAE5E1",
