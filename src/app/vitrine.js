@@ -2,18 +2,23 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 import Header from "../components/Header";
-import Banner from "../components/Banner";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
-
+import Octicons from "@expo/vector-icons/Octicons";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Header />
-      <Banner />
-      <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
+      <View style={styles.filtro}>
+      <Octicons
+        name="filter"
+        size={30}
+        color="white"
+      />
+      <Text style={styles.filtroText}>Filtro</Text>
+      </View>
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
@@ -29,9 +34,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E1E1E",
     alignItems: "center",
   },
-  galeriaInfo: {
+  filtro: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  filtroText: {
     fontSize: "18px",
     color: "white",
-    marginTop: 20,
+    marginVertical: 20,
+    marginLeft: 10,
   },
 });

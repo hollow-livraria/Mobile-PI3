@@ -4,11 +4,8 @@
 //                           じしˍ,)ノ
 
 import { View, StyleSheet, Text, TextInput } from "react-native";
-import { Image } from "expo-image";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
 
 export default function Header() {
   return (
@@ -24,8 +21,12 @@ export default function Header() {
           color="black"
           style={styles.lupa}
         />
-        <FontAwesomeIcon icon={faCartShopping} size={26} color={"white"}/>
-        <FontAwesomeIcon icon={faHeart} size={26} color={"white"} />
+        <FontAwesome6
+          name="comment-dots"
+          size={30}
+          color="white"
+          style={styles.comment}
+        />
       </View>
     </View>
   );
@@ -39,8 +40,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#000002",
     padding: 15,
-    position: "absolute",
-    top: 0,
+
   },
   searchBody: {
     height: 35,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     height: 35,
-    width: "65%",
+    width: "75%",
     backgroundColor: "#EAE5E1",
     margin: 10,
     paddingLeft: 40,

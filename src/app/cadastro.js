@@ -4,7 +4,7 @@ import { Button, TextInput } from "react-native-web";
 import { TouchableOpacity } from "react-native";
 import { useRouter } from 'expo-router';
 
-export default function Login() {
+export default function Cadastro() {
     return (
         <ScrollView style={styles.container}>
             <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
@@ -59,10 +59,12 @@ export default function Login() {
 
             <View style={styles.checkboxContainer}>
                 <input type="checkbox" style={styles.checkbox} />
-                <Text style={styles.checkboxLabel}>Eu aceito os termos de uso</Text>
+                <Text style={styles.checkboxLabel}>Eu concordo com os termos e politicas do site. </Text>
             </View>
 
-            <Text style={styles.p}>Esqueceu sua senha?</Text>
+            <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
+                <Text style={styles.signText}>Cadastrar-se</Text>
+            </TouchableOpacity>
             
             <View style={styles.separador} >
                 <View style={styles.horizontalLine} />
@@ -75,12 +77,9 @@ export default function Login() {
                 <Text style={styles.buttonText}>Continuar com o Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
-                <Text style={styles.signText}>Entrar</Text>
-            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push('/cadastro')}>
-                <Text style={styles.p2}>Já é cadastrado? <Text style={{color: "#E1D5C2"}}>Entre!</Text></Text>
+
             </TouchableOpacity>
             
 
@@ -114,6 +113,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 40,
         fontFamily: "GildaDisplay",
+        marginBottom: '10%',
     },
     h1: {
         color: "#EAE5E1",
@@ -225,13 +225,13 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     checkbox: {
-        width: 20,
-        height: 20,
+        width: 14,
+        height: 14,
         marginRight: 10,
     },
     checkboxLabel: {
-        color: "#E1D5C2",
-        fontSize: 16,
+        color: "#EAE5E1",
+        fontSize: 14,
         fontFamily: "GildaDisplay",
     },
 });
