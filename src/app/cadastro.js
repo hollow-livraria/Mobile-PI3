@@ -18,7 +18,7 @@ export default function Login() {
 
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>E-mail</Text>
-                <TextInput style={styles.input} placeholder="E-maiexemplo@gmail.coml" />
+                <TextInput style={styles.input} placeholder="exemplo@gmail.com" />
             </View>
 
             <View style={styles.inputContainer}>
@@ -29,6 +29,7 @@ export default function Login() {
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Gênero</Text>
                 <select style={styles.selectInput}>
+                    <option value="selecione" style={styles.option}>Selecione uma opção</option>
                     <option value="masculino" style={styles.option}>Masculino</option>
                     <option value="feminino" style={styles.option}>Feminino</option>
                     <option value="outro" style={styles.option}>Outro</option>
@@ -79,7 +80,7 @@ export default function Login() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push('/cadastro')}>
-                <Text style={styles.p2}>Não tem conta? <Text style={{color: "#E1D5C2"}}>Cadastre-se já!</Text></Text>
+                <Text style={styles.p2}>Já é cadastrado? <Text style={{color: "#E1D5C2"}}>Entre!</Text></Text>
             </TouchableOpacity>
             
 
