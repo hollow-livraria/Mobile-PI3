@@ -1,10 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, TextInput } from "react-native"; 
 import { TouchableOpacity } from "react-native";
+import { ArrowLeft } from 'lucide-react';
 
 export default function ForgetPassword() {
   return (
     <ScrollView style={styles.container}>
+        <Button icon={<ArrowLeft />}>
+          Hello world
+        </Button>
+
       <View style={styles.introducao}>
         <Text style={styles.p}>Esqueceu sua senha?</Text>
         <Text style={styles.h1}>Recupere seu acesso!</Text>
@@ -17,14 +22,16 @@ export default function ForgetPassword() {
           <TextInput style={styles.input} placeholder="exemplo@gmail.com" />
       </View>
 
-      
-      <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
-          <Text style={styles.signText}>Enviar e-mail</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
-          <Text style={styles.signText}>Cancelar</Text>
-      </TouchableOpacity>
+      <View style={styles.btns}>
+        <TouchableOpacity style={[styles.signinBtnCancel, styles.buttonSpacing]} onPress={() => router.push('/index')}>
+            <Text style={styles.signText}>Cancelar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.signinBtn, styles.buttonSpacing]} onPress={() => router.push('/index')}>
+            <Text style={styles.signText}>Enviar e-mail</Text>
+        </TouchableOpacity>
+      </View>
+
     </ScrollView>
   );
 }
@@ -86,20 +93,39 @@ input: {
   fontSize: 16,
   color: "#3F0D09",
   placeholderTextColor: "#3f0d0988",
-  marginBottom: 40,
+  marginBottom: 20,
 },
-signinButton: {
+signinBtn: {
   backgroundColor: "#20232A",
   padding: 12,
   borderRadius: 5,
-  marginTop: 20,
-  width: "60%",
+  marginTop: 10,
+  width: "50%",
   alignSelf: "center",
+},
+signinBtnCancel: {
+  padding: 12,
+  borderRadius: 5,
+  marginTop: 10,
+  width: "50%",
+  alignSelf: "center",
+  borderColor: "#EAE5E1",
+  borderWidth: 1,
 },
 signText: {
   color: "#EAE5E1",
   fontSize: 16,
   textAlign: "center",
   fontFamily: "GildaDisplay",
+},
+btns: {
+  flexDirection: "row",
+  width: "80%",
+  alignSelf: "center",
+  marginTop: 10,
+  justifyContent: "center",
+},
+buttonSpacing: {
+  marginHorizontal: 10,
 },
 });
