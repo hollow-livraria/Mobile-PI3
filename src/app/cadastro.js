@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#3F0D09",
         placeholderTextColor: "#3f0d0988",
+        outlineStyle: "none",
     },
     selectInput: {
         width: "100%",
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: "50%",
         alignSelf: "center",
+        marginBottom: 40,
     },
     buttonIcon: {
         width: 20,
