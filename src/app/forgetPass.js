@@ -1,8 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, TextInput } from "react-native"; 
 import { TouchableOpacity } from "react-native";
+import { router, useRouter } from 'expo-router';
 
 export default function ForgetPassword() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.introducao}>
@@ -18,11 +20,11 @@ export default function ForgetPassword() {
       </View>
 
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.cancelBtn} onPress={() => router.push('/index')}>
+        <TouchableOpacity style={styles.cancelBtn} onPress={() => router.push('/login')}>
             <Text style={styles.signText}>Cancelar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.signinBtn} onPress={() => router.push('/index')}>
+        <TouchableOpacity style={styles.signinBtn} onPress={() => router.push('/')}>
             <Text style={styles.signText}>Enviar e-mail</Text>
         </TouchableOpacity>
 
