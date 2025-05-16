@@ -20,6 +20,7 @@ export default function Layout() {
         <Stack.Screen name="login" options={{headerShown: false}} />
         <Stack.Screen name="cadastro" options={{headerShown: false}} />
         <Stack.Screen name="forgetPass" options={{headerShown: false}} />
+        <Stack.Screen name="verifyEmail" options={{headerShown: false}} />
         </Stack>
     </TamaguiProvider>
   )
