@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 
 export default function ForgetPassword() {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.introducao}>
         <Text style={styles.p}>Esqueceu sua senha?</Text>
         <Text style={styles.h1}>Recupere seu acesso!</Text>
@@ -17,15 +17,18 @@ export default function ForgetPassword() {
           <TextInput style={styles.input} placeholder="exemplo@gmail.com" />
       </View>
 
-      
-      <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
-          <Text style={styles.signText}>Enviar e-mail</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
-          <Text style={styles.signText}>Cancelar</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.cancelBtn} onPress={() => router.push('/index')}>
+            <Text style={styles.signText}>Cancelar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.signinBtn} onPress={() => router.push('/index')}>
+            <Text style={styles.signText}>Enviar e-mail</Text>
+        </TouchableOpacity>
+
+      </View>
+
+    </View>
   );
 }
  
@@ -86,15 +89,26 @@ input: {
   fontSize: 16,
   color: "#3F0D09",
   placeholderTextColor: "#3f0d0988",
-  marginBottom: 40,
+  marginBottom: 20,
+  outlineStyle: "none",
 },
-signinButton: {
+
+signinBtn: {
   backgroundColor: "#20232A",
   padding: 12,
   borderRadius: 5,
   marginTop: 20,
-  width: "60%",
+  width: "48%", 
   alignSelf: "center",
+},
+cancelBtn: {
+  padding: 12,
+  borderRadius: 5,
+  marginTop: 20,
+  width: "48%", 
+  alignSelf: "center",
+  borderColor: "#EAE5E1",
+  borderWidth: 1,
 },
 signText: {
   color: "#EAE5E1",
@@ -102,4 +116,10 @@ signText: {
   textAlign: "center",
   fontFamily: "GildaDisplay",
 },
+btnContainer: {
+  width: "80%",
+  alignSelf: "center",
+  flexDirection: "row",
+  justifyContent: "space-between",
+}
 });
