@@ -23,6 +23,7 @@ export default function Layout() {
         <Stack.Screen name="forgetPass" options={{ headerShown: false }} />
         <Stack.Screen name="vitrine" options={{ headerShown: false }} />
         <Stack.Screen name="perfil" options={{ headerShown: false }} />
+        <Stack.Screen name="verifyEmail" options={{headerShown: false}} />
       </Stack>
     </TamaguiProvider>
   );
