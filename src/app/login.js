@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#3F0D09",
         placeholderTextColor: "#3f0d0988",
+        outlineStyle: "none",
     },
     pSeparador: {
         color: "#EAE5E1",
