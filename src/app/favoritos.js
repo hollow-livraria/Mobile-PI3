@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-import Header from "../components/Header";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   },
   favoritos: {
     width: "100%",
-    height: 100,
+    height: 120,
     border: "1px solid white",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
