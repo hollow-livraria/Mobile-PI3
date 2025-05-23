@@ -16,7 +16,7 @@ export default function perfil() {
       <View style={styles.perfilHeader}>
         <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
           <Image
-            style={styles.icon}
+            style={styles.avatar}
             source={"https://github.com/hollow-livraria.png"}
           />
           <View style={{ marginTop: 20 }}>
@@ -46,38 +46,44 @@ export default function perfil() {
         <Text
           style={{
             color: "white",
-            marginLeft: 20,
-            marginTop: 20,
-            fontSize: 20,
+            fontSize: 15,
+            marginTop: 10,
+            marginLeft: 10,
           }}
         >
           Meus Pedidos
         </Text>
-        <Text style={{ color: "white", marginLeft: 20, fontSize: 12 }}>
+        <Text style={{ color: "white", marginBottom: 15, marginLeft: 10, fontSize: 10 }}>
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View style={styles.icon}>
             <Ionicons name="wallet-outline" size={40} color="white" />
             <Text style={{ color: "white", fontSize: "12" }}>A pagar</Text>
           </View>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View style={styles.icon}>
             <Feather name="box" size={40} color="white" />
             <Text style={{ color: "white", fontSize: "12" }}>A preparar</Text>
           </View>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View style={styles.icon}>
             <Ionicons name="car-outline" size={40} color="white" />
             <Text style={{ color: "white", fontSize: "12" }}>A caminho</Text>
           </View>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View style={styles.icon}>
             <Ionicons name="star-outline" size={40} color="white" />
             <Text style={{ color: "white", fontSize: "12" }}>A avaliar</Text>
           </View>
         </View>
       </View>
-      <View>
-        <Text style={{marginTop: 20, color: "white"}}>oi</Text>
+      <View style={styles.abaAjuda}>
+        <Text style={{ color: "white", textDecoration: "underline" }}>
+          Central de ajuda
+        </Text>
+        <Text style={{ color: "white", textDecoration: "underline" }}>
+          Sobre nós
+        </Text>
       </View>
+      <Text style={{color: "white", fontSize: 20, marginTop: 50, marginRight: 50 }}>A escolha certa para o seu paladar!</Text>
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 150,
   },
-  icon: {
+  avatar: {
     width: 80,
     height: 80,
     borderRadius: 50,
@@ -133,6 +139,7 @@ const styles = StyleSheet.create({
     border: "1px solid white",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
+    padding: 10,
   },
   pedidosIcons: {
     display: "flex",
@@ -141,6 +148,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: 50,
-    marginTop: 20,
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  abaAjuda: {
+    width: "100%",
+    marginLeft: 30,
+    marginTop: 30,
+    gap: 10,
   },
 });

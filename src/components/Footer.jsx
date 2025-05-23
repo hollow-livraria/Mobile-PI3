@@ -3,34 +3,23 @@
 //                            |、˜〵
 //                            じしˍ,)ノ
 
-import { View, StyleSheet, Text, TextInput } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
 
+import { useRouter } from "expo-router";
+
 export default function Footer() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
-      <Octicons
-        name="home"
-        size={35}
-        color="white"
-      />
-      <Octicons
-        name="heart"
-        size={35}
-        color="white"
-      />
-      <Feather
-        name="shopping-cart"
-        size={35}
-        color="white"
-      />
-      <Octicons
-        name="person"
-        size={40}
-        color="white"
-      />
+      <Octicons name="home" size={35} color="white" />
+      <Octicons name="heart" size={35} color="white" />
+      <Feather name="shopping-cart" size={35} color="white" />
+      <Pressable onPress={() => router.push("/perfil")}>
+        <Octicons name="person" size={40} color="white" />
+      </Pressable>
     </View>
   );
 }
