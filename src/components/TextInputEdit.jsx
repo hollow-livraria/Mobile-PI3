@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 export default function TextInputEdit(props) {
   return (
     <View style={styles.container}>
-      <Text style={{color: "white"}}>{props.info}</Text>
+      <Text style={{ color: "white" }}>{props.info}</Text>
       <TextInput style={styles.input} />
     </View>
   );

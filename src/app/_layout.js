@@ -15,8 +15,7 @@ export default function Layout() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-        }}
-      >
+        }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="cadastro" options={{ headerShown: false }} />
@@ -24,8 +23,9 @@ export default function Layout() {
         <Stack.Screen name="vitrine" options={{ headerShown: false }} />
         <Stack.Screen name="perfil" options={{ headerShown: false }} />
         <Stack.Screen name="favoritos" options={{ headerShown: false }} />
-        <Stack.Screen name="verifyEmail" options={{headerShown: false}} />
+        <Stack.Screen name="verifyEmail" options={{ headerShown: false }} />
         <Stack.Screen name="perfilEdit" options={{ headerShown: false }} />
+        <Stack.Screen name="orderHistory" options={{ headerShown: false }} />
       </Stack>
     </TamaguiProvider>
   );

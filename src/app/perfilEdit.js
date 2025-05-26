@@ -37,6 +37,9 @@ export default function App() {
         <TextInputEdit info="endereço:" />
         <TextInputEdit info="cep:" />
         <TextInputEdit info="telefone:" />
+        <View style={styles.salvarBtn}>
+          <Text>Salvar Alteração</Text>
+        </View>
       </View>
 
       <Footer />
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#1E1E1E",
     alignItems: "center",
-    paddingBottom: 30, 
+    paddingBottom: 30,
   },
   voltar: {
     width: "100%",
@@ -76,5 +79,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "#20232A",
     marginBottom: 100,
+  },
+  salvarBtn: {
+    width: "50%",
+    height: 50,
+    backgroundColor: "#E1D5C2",
+    borderRadius: 10,
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
   },
 });
