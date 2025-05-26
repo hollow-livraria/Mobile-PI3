@@ -1,14 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 
-import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
+import OrderCard from "../components/OrderCard";
 import { Image } from "expo-image";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 
 import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function perfil() {
   return (
@@ -41,6 +39,18 @@ export default function perfil() {
           <Feather name="shopping-cart" size={25} color="white" />
         </View>
       </View>
+      <View style={styles.pedidos}>
+        <Text style={{ color: "#E1D5C2", fontSize: 28 }}>
+          Historico de pedidos
+        </Text>
+      </View>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center", paddingBottom: 90 }}>
+        <OrderCard />
+        <OrderCard />
+        <OrderCard />
+      </ScrollView>
+
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -91,28 +101,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    height: 150,
+    height: 100,
     border: "1px solid white",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
     padding: 10,
-  },
-  pedidosIcons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "100%",
-    height: 50,
-  },
-  icon: {
+    marginTop: 20,
     justifyContent: "center",
-    alignItems: "center",
-  },
-  abaAjuda: {
-    width: "100%",
-    marginLeft: 30,
-    marginTop: 30,
-    gap: 10,
   },
 });
