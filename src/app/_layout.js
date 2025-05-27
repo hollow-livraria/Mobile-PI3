@@ -26,6 +26,7 @@ export default function Layout() {
         <Stack.Screen name="verifyEmail" options={{ headerShown: false }} />
         <Stack.Screen name="perfilEdit" options={{ headerShown: false }} />
         <Stack.Screen name="orderHistory" options={{ headerShown: false }} />
+        <Stack.Screen name="productDetails" options={{ headerShown: false }} />
       </Stack>
     </TamaguiProvider>
   );
