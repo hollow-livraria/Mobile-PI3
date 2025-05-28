@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -11,7 +11,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Header />
       <View style={styles.imageHolder}>
         <Image
@@ -80,14 +80,13 @@ export default function App() {
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    display: "flex",
+    flexGrow: 1,
     flexDirection: "column",
     backgroundColor: "#1E1E1E",
     alignItems: "center",
@@ -97,17 +96,14 @@ const styles = StyleSheet.create({
     height: 300,
     backgroundColor: "#FFF",
     borderRadius: 5,
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   informationBody: {
     width: "100%",
-    display: "flex",
     flexDirection: "column",
   },
   informationText: {
-    display: "flex",
     width: "90%",
     alignSelf: "center",
     flexDirection: "row",
@@ -115,13 +111,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
     padding: 20,
-    border: "1px solid white",
+    borderWidth: 1,
+    borderColor: "white",
     borderTopColor: "transparent",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
   },
   quantitySelector: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
@@ -129,22 +125,21 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   quantitySelectorBtn: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     gap: 5,
-    border: "1px solid white",
-    width: "40px",
-    height: "20px",
+    borderWidth: 1,
+    borderColor: "white",
+    width: 40,
+    height: 20,
     borderRadius: 5,
   },
   envioBody: {
     flex: 1,
-    display: "flex",
     flexDirection: "column",
     paddingVertical: 20,
     paddingLeft: 20,
-    border: "1px solid white",
+    borderWidth: 1,
     borderRightColor: "transparent",
     borderLeftColor: "transparent",
   },
@@ -153,7 +148,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   additionalDetails: {
-    display: "flex",
     flexDirection: "row",
     backgroundColor: "white",
     width: "100%",
