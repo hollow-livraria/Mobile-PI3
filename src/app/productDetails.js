@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
+import Comment from "../components/Comment";
 
 import { Image } from "expo-image";
 
@@ -76,6 +77,17 @@ export default function App() {
           <Text>Informaçoes Adicionais</Text>
           <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
         </View>
+      </View>
+      <View style={styles.avaliarBody}>
+        <Text style={{color: "white", fontSize: 15}}>Experimente e compartilhe a sua opinião!</Text>
+        <Text style={{color: "white", fontSize: 8}}>O que você achou desse vinho? Sua avaliação é importante para nós!</Text>
+        <View style={styles.avaliarBtn}>
+          <Text style={{fontSize: 12}}>Quero avaliar :)</Text>
+        </View>
+      </View>
+      <View style={styles.commentSection}>
+        <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
+        <Comment />
       </View>
       <Galeria />
       <Footer />
@@ -156,4 +168,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: "space-between",
   },
+  avaliarBody: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 30,
+    gap: 10
+  },
+  avaliarBtn: {
+    backgroundColor: "white",
+    width: "50%",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 60,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  commentSection: {
+    width: "90%",
+    border: "1px solid white",
+    alignItems: "center",
+    marginTop: 20,
+  }
 });
