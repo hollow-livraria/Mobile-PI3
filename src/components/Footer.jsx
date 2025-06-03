@@ -27,13 +27,13 @@ export default function Footer() {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
+    left: 0,
+    right: 0,
     bottom: 0,
-    display: "flex",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    height: 70,
-    width: "100%",
     backgroundColor: "#000002",
     padding: 15,
     boxShadow: "0px -2px 10px rgba(255, 255, 255, 0.20)",

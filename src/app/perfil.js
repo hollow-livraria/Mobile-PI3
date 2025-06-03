@@ -53,7 +53,14 @@ export default function perfil() {
         >
           Meus Pedidos
         </Text>
-        <Text style={{ color: "white", marginBottom: 15, marginLeft: 10, fontSize: 10 }}>
+        <Text
+          style={{
+            color: "white",
+            marginBottom: 15,
+            marginLeft: 10,
+            fontSize: 10,
+          }}
+        >
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
@@ -83,8 +90,20 @@ export default function perfil() {
           Sobre nós
         </Text>
       </View>
-      <Text style={{color: "white", fontSize: 20, marginTop: 50, marginRight: 50 }}>A escolha certa para o seu paladar!</Text>
-      <Galeria />
+      <Text
+        style={{
+          color: "white",
+          fontSize: 20,
+          marginTop: 50,
+          marginRight: 50,
+          alignSelf: "center",
+        }}
+      >
+        A escolha certa para o seu paladar!
+      </Text>
+      <View style={{ width: "100%", flex: 1, paddingBottom: 90, alignItems: "center" }}>
+        <Galeria />
+      </View>
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -94,10 +113,8 @@ export default function perfil() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
     flexDirection: "column",
     backgroundColor: "#1E1E1E",
-    alignItems: "center",
   },
   perfilHeader: {
     display: "flex",
@@ -136,9 +153,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     height: 150,
-    border: "1px solid white",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
+    borderTopWidth: 1,
+    borderTopColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
     padding: 10,
   },
   pedidosIcons: {
