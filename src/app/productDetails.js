@@ -88,7 +88,13 @@ export default function App() {
       <View style={styles.commentSection}>
         <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
         <Comment />
+        <Comment />
+        <Comment />
       </View>
+      <View style={styles.moreComments}>
+        <Text>Mostrar mais</Text>
+      </View>
+      <Text style={{color: "#E1D5C2", fontSize: 20, alignSelf: "flex-start", marginLeft: 35}}>Conheça tambem</Text>
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
@@ -186,8 +192,17 @@ const styles = StyleSheet.create({
   },
   commentSection: {
     width: "90%",
-    border: "1px solid white",
     alignItems: "center",
     marginTop: 20,
+  },
+  moreComments: {
+    width: 100,
+    height: 30,
+    backgroundColor: "#E1D5C2",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 100
   }
 });
