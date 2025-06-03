@@ -10,7 +10,7 @@ import { Image } from "expo-image";
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function App() {
+export default function productDetails() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Header />

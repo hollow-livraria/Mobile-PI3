@@ -7,7 +7,7 @@ import TextInputEdit from "../components/TextInputEdit";
 import { Image } from "expo-image";
 import Octicons from "@expo/vector-icons/Octicons";
 
-export default function App() {
+export default function perfilEdit() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.voltar}>

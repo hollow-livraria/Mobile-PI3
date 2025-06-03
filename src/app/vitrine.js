@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 
 import Octicons from "@expo/vector-icons/Octicons";
 
-export default function App() {
+export default function vitrine() {
   return (
     <View style={styles.container}>
       <Header />

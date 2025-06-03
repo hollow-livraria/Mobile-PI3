@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
 
-export default function perfil() {
+export default function orderHistory  () {
   return (
     <View style={styles.container}>
       <View style={styles.perfilHeader}>

@@ -4,12 +4,14 @@ import { StyleSheet, Text, View } from "react-native";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
-export default function favoritos() {
+import Octicons from "@expo/vector-icons/Octicons";
+
+export default function carrinho() {
   return (
     <View style={styles.container}>
-      <View style={styles.favoritos}>
-        <Text style={{fontSize: 25, color: "white"}}>Favoritos</Text>
-      </View>
+        <View>
+            <Text style={{color: "white", marginTop: 100}}>Carrinho</Text>
+        </View>
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
@@ -24,17 +26,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#1E1E1E",
     alignItems: "center",
-  },
-  favoritos: {
-    width: "100%",
-    height: 120,
-    border: "1px solid white",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "transparent",
-    marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 20,
   },
 });
