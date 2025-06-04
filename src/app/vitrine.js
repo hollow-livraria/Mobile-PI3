@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
   },
   filtro: {

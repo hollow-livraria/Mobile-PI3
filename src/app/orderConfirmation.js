@@ -98,11 +98,11 @@ export default function orderConfirmation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
   },
   scrollContent: {
     alignItems: "center",
-    paddingBottom: 100, // espaço para o Footer
+    paddingBottom: 100, 
   },
   envioBody: {
     width: "100%",

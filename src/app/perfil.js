@@ -101,7 +101,7 @@ export default function perfil() {
       >
         A escolha certa para o seu paladar!
       </Text>
-      <View style={{ width: "100%", flex: 1, paddingBottom: 90, alignItems: "center" }}>
+      <View style={{ width: "100%", flex: 1, paddingBottom: 20, alignItems: "center" }}>
         <Galeria />
       </View>
       <Footer />
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
   },
   perfilHeader: {
     display: "flex",

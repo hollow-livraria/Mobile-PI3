@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
   },
   imageHolder: {
