@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { useRouter } from 'expo-router';
 
 export default function Cadastro() {
+    const router = useRouter();
     return (
         <ScrollView style={styles.container}>
             <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
@@ -62,7 +63,7 @@ export default function Cadastro() {
                 <Text style={styles.checkboxLabel}>Eu concordo com os termos e politicas do site. </Text>
             </View>
 
-            <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/index')}>
+            <TouchableOpacity style={styles.signinButton} onPress={() => router.push('/login')}>
                 <Text style={styles.signText}>Cadastrar-se</Text>
             </TouchableOpacity>
             
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#3F0D09",
         placeholderTextColor: "#3f0d0988",
+        outlineStyle: "none",
     },
     selectInput: {
         width: "100%",
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: "50%",
         alignSelf: "center",
+        marginBottom: 40,
     },
     buttonIcon: {
         width: 20,

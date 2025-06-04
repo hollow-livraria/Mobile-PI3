@@ -2,10 +2,11 @@ import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
 import { Button, TextInput } from "react-native-web";
 import { TouchableOpacity } from "react-native";
-import { useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 
 
 export default function Login() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
@@ -22,8 +23,11 @@ export default function Login() {
                 <TextInput style={styles.input} placeholder="Digite sua senha..."/>
             </View>
 
+            <TouchableOpacity onPress={() => router.push('/forgetPass')}>
+
             <Text style={styles.p}>Esqueceu sua senha?</Text>
-            
+                        </TouchableOpacity>
+
             <View style={styles.separador} >
                 <View style={styles.horizontalLine} />
                 <Text style={styles.pSeparador}>OU</Text>
@@ -105,6 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#3F0D09",
         placeholderTextColor: "#3f0d0988",
+        outlineStyle: "none",
     },
     pSeparador: {
         color: "#EAE5E1",
