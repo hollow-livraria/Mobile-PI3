@@ -14,9 +14,15 @@ export default function Footer() {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <Octicons name="home" size={35} color="white" />
-      <Octicons name="heart" size={35} color="white" />
-      <Feather name="shopping-cart" size={35} color="white" />
+      <Pressable onPress={() => router.push("/")}>
+        <Octicons name="home" size={35} color="white" />
+      </Pressable>
+      <Pressable onPress={() => router.push("/favoritos")}>
+        <Octicons name="heart" size={35} color="white" />
+      </Pressable>
+      <Pressable onPress={() => router.push("/carrinho")}>
+        <Feather name="shopping-cart" size={35} color="white" />
+      </Pressable>
       <Pressable onPress={() => router.push("/perfil")}>
         <Octicons name="person" size={40} color="white" />
       </Pressable>
