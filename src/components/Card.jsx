@@ -20,7 +20,6 @@ export default function Card() {
           style={{ width: 100, height: 100, borderRadius: 5 }}
         />
       </Pressable>
-
       <View style={styles.bar}></View>
       <Text style={styles.title}>vinho muito legal</Text>
       <View style={styles.compra}>
