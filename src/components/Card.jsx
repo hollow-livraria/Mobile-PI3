@@ -3,22 +3,26 @@
 //                            |、˜〵
 //                           じしˍ,)ノ
 
-import { View, StyleSheet, Text, TextInput } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import { useRouter } from "expo-router";
+
 export default function Card() {
+    const router = useRouter();
   return (
     <View style={styles.cardBody}>
-      <Image
-        source={require("../../assets/imgs/vinho_teste.png")}
-        style={{ width: 100, height: 100, borderRadius: 5 }}
-      />
+      <Pressable onPress={() => router.push("/productDetails")}>
+        <Image
+          source={require("../../assets/imgs/vinho_teste.png")}
+          style={{ width: 100, height: 100, borderRadius: 5 }}
+        />
+      </Pressable>
+
       <View style={styles.bar}></View>
-      <Text style={styles.title}>
-        vinho muito legal
-      </Text>
+      <Text style={styles.title}>vinho muito legal</Text>
       <View style={styles.compra}>
         <Text>R$ 10,00</Text>
         <FontAwesomeIcon icon={faPlus} style={styles.add} />
