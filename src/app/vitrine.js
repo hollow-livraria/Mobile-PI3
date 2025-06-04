@@ -6,18 +6,21 @@ import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
 import Octicons from "@expo/vector-icons/Octicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function vitrine() {
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.filtro}>
-      <Octicons
-        name="filter"
-        size={30}
-        color="white"
-      />
-      <Text style={styles.filtroText}>Filtro</Text>
+        <View style={styles.dropdownFilter}>
+          <Text> Ordenar por: Mais Vendidos</Text>
+          <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+        </View>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <Octicons name="filter" size={30} color="white" />
+          <Text style={styles.filtroText}>Filtro</Text>
+        </View>
       </View>
       <Galeria />
       <Footer />
@@ -39,6 +42,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    gap: 80,
     width: "100%",
   },
   filtroText: {
@@ -46,5 +50,12 @@ const styles = StyleSheet.create({
     color: "white",
     marginVertical: 20,
     marginLeft: 10,
+  },
+  dropdownFilter: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#E1D5C2",
+    borderRadius: 5,
+    paddingVertical: 8,
   },
 });
