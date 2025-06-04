@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
   },
   buyBody:{
     width: "100%",
-    height: 130,
+    height: 20,
     marginTop: 20,
+    marginBottom: 35,
     flexDirection: "row",
   }
 });

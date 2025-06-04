@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import React, { useState } from "react";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -11,6 +12,11 @@ import { Image } from "expo-image";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function productDetails() {
+  const [quantity, setQuantity] = useState(1);
+
+  const increment = () => setQuantity(q => q + 1);
+  const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Header />
@@ -30,12 +36,17 @@ export default function productDetails() {
         </Text>
         <View style={styles.quantitySelector}>
           <Text style={{ color: "white", fontSize: 15 }}>Quantidade</Text>
-          <View style={styles.quantitySelectorBtn}>
-            <Pressable onPress={() => alert("Decrementar quantidade")}>
+          <View
+            style={[
+              styles.quantitySelectorBtn,
+              { minWidth: 50, width: Math.max(50, 20 + String(quantity).length * 12) }
+            ]}
+          >
+            <Pressable onPress={decrement}>
               <Text style={{ color: "white" }}>-</Text>
             </Pressable>
-            <Text style={{ color: "white" }}>1</Text> 
-            <Pressable onPress={() => alert("Incrementar quantidade")}>
+            <Text style={{ color: "white" }}>{quantity}</Text> 
+            <Pressable onPress={increment}>
               <Text style={{ color: "white" }}>+</Text>
             </Pressable>
           </View>
