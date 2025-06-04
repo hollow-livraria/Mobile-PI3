@@ -5,23 +5,35 @@ import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 import CartCard from "../components/CartCard";
 
-//            <Octicons name="trash" size={24} color="black" /> lixeira
-
 export default function carrinho() {
   return (
     <View style={styles.container}>
       <View style={styles.cartHeader}>
-        <Text style={{ color: "white", fontSize: 20 }}>Carrinho</Text>
-        <Text style={{ color: "white" }}>3 items</Text>
+        <Text style={{ color: "#E1D5C2", fontSize: 20, marginBottom: 10 }}>
+          Carrinho
+        </Text>
+        <Text style={{ color: "white", marginBottom: 10 }}>3 items</Text>
       </View>
-      <ScrollView style={styles.cartHolder}>
+      <ScrollView
+        style={styles.cartHolder}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <CartCard />
         <CartCard />
         <CartCard />
         <CartCard />
         <CartCard />
       </ScrollView>
+      <Text style={{color: "#E1D5C2", marginTop: 20, marginLeft: 35, fontSize: 18, alignSelf: "flex-start"}}>A escolha certa para o seu paladar!</Text>
       <Galeria />
+      <View style={styles.buyBody}>
+        <View style={{backgroundColor: "white", width: "60%", height: 130, alignItems: "center"}}>
+          <Text style={{fontSize: 25, marginTop: 10}}>R$ 1.500</Text>
+        </View>
+        <View style={{backgroundColor: "#20232A", width: "40%", height: 130, alignItems: "center"}}>
+          <Text style={{color: "#E1D5C2", fontSize: 20, marginTop: 10}}>Finalizar (3)</Text>
+        </View>
+      </View>
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -47,8 +59,15 @@ const styles = StyleSheet.create({
   },
   cartHolder: {
     width: "90%",
-    height: "10%",
+    marginTop: 30,
+    maxHeight: 330,
     flexDirection: "column",
     backgroundColor: "#20232A",
   },
+  buyBody:{
+    width: "100%",
+    height: 130,
+    marginTop: 20,
+    flexDirection: "row",
+  }
 });
