@@ -13,10 +13,19 @@ export default function Layout() {
             fontWeight: "bold",
           },
         }}>
-        <Stack.Screen name="index" options={{headerShown: false}} />
-        <Stack.Screen name="login" options={{headerShown: false}} />
-        <Stack.Screen name="cadastro" options={{headerShown: false}} />
-        </Stack>
-    </TamaguiProvider>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="cadastro" options={{ headerShown: false }} />
+        <Stack.Screen name="forgetPass" options={{ headerShown: false }} />
+        <Stack.Screen name="vitrine" options={{ headerShown: false }} />
+        <Stack.Screen name="perfil" options={{ headerShown: false }} />
+        <Stack.Screen name="favoritos" options={{ headerShown: false }} />
+        <Stack.Screen name="verifyEmail" options={{ headerShown: false }} />
+        <Stack.Screen name="perfilEdit" options={{ headerShown: false }} />
+        <Stack.Screen name="orderHistory" options={{ headerShown: false }} />
+        <Stack.Screen name="productDetails" options={{ headerShown: false }} />
+        <Stack.Screen name="carrinho" options={{ headerShown: false }} />
+        <Stack.Screen name="orderConfirmation" options={{ headerShown: false }} />
+      </Stack>
   );
 }

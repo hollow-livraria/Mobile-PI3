@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
-export default function App() {
+export default function favoritos() {
   return (
     <View style={styles.container}>
       <View style={styles.favoritos}>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
   },
   favoritos: {

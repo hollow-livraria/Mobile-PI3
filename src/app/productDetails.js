@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import React, { useState } from "react";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -10,7 +11,12 @@ import { Image } from "expo-image";
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function App() {
+export default function productDetails() {
+  const [quantity, setQuantity] = useState(1);
+
+  const increment = () => setQuantity(q => q + 1);
+  const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Header />
@@ -30,12 +36,17 @@ export default function App() {
         </Text>
         <View style={styles.quantitySelector}>
           <Text style={{ color: "white", fontSize: 15 }}>Quantidade</Text>
-          <View style={styles.quantitySelectorBtn}>
-            <Pressable onPress={() => alert("Decrementar quantidade")}>
+          <View
+            style={[
+              styles.quantitySelectorBtn,
+              { minWidth: 50, width: Math.max(50, 20 + String(quantity).length * 12) }
+            ]}
+          >
+            <Pressable onPress={decrement}>
               <Text style={{ color: "white" }}>-</Text>
             </Pressable>
-            <Text style={{ color: "white" }}>1</Text> 
-            <Pressable onPress={() => alert("Incrementar quantidade")}>
+            <Text style={{ color: "white" }}>{quantity}</Text> 
+            <Pressable onPress={increment}>
               <Text style={{ color: "white" }}>+</Text>
             </Pressable>
           </View>
@@ -88,7 +99,13 @@ export default function App() {
       <View style={styles.commentSection}>
         <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
         <Comment />
+        <Comment />
+        <Comment />
       </View>
+      <View style={styles.moreComments}>
+        <Text>Mostrar mais</Text>
+      </View>
+      <Text style={{color: "#E1D5C2", fontSize: 20, alignSelf: "flex-start", marginLeft: 35}}>Conheça tambem</Text>
       <Galeria />
       <Footer />
       <StatusBar style="auto" />
@@ -100,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
   },
   imageHolder: {
@@ -186,8 +203,17 @@ const styles = StyleSheet.create({
   },
   commentSection: {
     width: "90%",
-    border: "1px solid white",
     alignItems: "center",
     marginTop: 20,
+  },
+  moreComments: {
+    width: 100,
+    height: 30,
+    backgroundColor: "#E1D5C2",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 100
   }
 });

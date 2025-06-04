@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
 
-export default function perfil() {
+export default function orderHistory  () {
   return (
     <View style={styles.container}>
       <View style={styles.perfilHeader}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
   },
   perfilHeader: {

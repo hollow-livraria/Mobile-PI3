@@ -6,7 +6,7 @@
 import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
 
-export default function Card() {
+export default function OrderCard() {
   return (
     <View style={styles.cardBody}>
       <View style={{ flexDirection: "row" }}>
