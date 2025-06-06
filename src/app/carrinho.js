@@ -16,22 +16,42 @@ export default function carrinho() {
       </View>
       <ScrollView
         style={styles.cartHolder}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <CartCard />
-        <CartCard />
+        contentContainerStyle={{ flexGrow: 1 }}>
         <CartCard />
         <CartCard />
         <CartCard />
       </ScrollView>
-      <Text style={{color: "#E1D5C2", marginTop: 20, marginLeft: 35, fontSize: 18, alignSelf: "flex-start"}}>A escolha certa para o seu paladar!</Text>
+      <Text
+        style={{
+          color: "#E1D5C2",
+          marginTop: 20,
+          marginLeft: 35,
+          fontSize: 18,
+          alignSelf: "flex-start",
+        }}>
+        A escolha certa para o seu paladar!
+      </Text>
       <Galeria />
       <View style={styles.buyBody}>
-        <View style={{backgroundColor: "white", width: "60%", height: 130, alignItems: "center"}}>
-          <Text style={{fontSize: 25, marginTop: 10}}>R$ 1.500</Text>
+        <View
+          style={{
+            backgroundColor: "white",
+            width: "60%",
+            height: 130,
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 25, marginTop: 10 }}>R$ 1.500</Text>
         </View>
-        <View style={{backgroundColor: "#20232A", width: "40%", height: 130, alignItems: "center"}}>
-          <Text style={{color: "#E1D5C2", fontSize: 20, marginTop: 10}}>Finalizar (3)</Text>
+        <View
+          style={{
+            backgroundColor: "#20232A",
+            width: "40%",
+            height: 130,
+            alignItems: "center",
+          }}>
+          <Text style={{ color: "#E1D5C2", fontSize: 20, marginTop: 10 }}>
+            Finalizar (3)
+          </Text>
         </View>
       </View>
       <Footer />
@@ -64,11 +84,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#20232A",
   },
-  buyBody:{
+  buyBody: {
     width: "100%",
     height: 20,
     marginTop: 20,
     marginBottom: 35,
     flexDirection: "row",
-  }
+  },
 });
