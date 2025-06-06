@@ -10,7 +10,11 @@ import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+import { useRouter } from "expo-router";
+
 export default function perfil() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       <View style={styles.perfilHeader}>
@@ -21,7 +25,9 @@ export default function perfil() {
           />
           <View style={{ marginTop: 20 }}>
             <Text style={styles.nomePerfil}>Livraria</Text>
-            <Pressable style={styles.editBtn} onPress={() => alert("Cliquei")}>
+            <Pressable
+              style={styles.editBtn}
+              onPress={() => router.push("/perfilEdit")}>
               <Text style={styles.editText}>Editar perfil</Text>
             </Pressable>
           </View>
@@ -31,8 +37,7 @@ export default function perfil() {
             flexDirection: "row",
             alignItems: "center",
             marginRight: 20,
-          }}
-        >
+          }}>
           <Octicons
             name="heart"
             size={25}
@@ -49,8 +54,7 @@ export default function perfil() {
             fontSize: 15,
             marginTop: 10,
             marginLeft: 10,
-          }}
-        >
+          }}>
           Meus Pedidos
         </Text>
         <Text
@@ -59,8 +63,7 @@ export default function perfil() {
             marginBottom: 15,
             marginLeft: 10,
             fontSize: 10,
-          }}
-        >
+          }}>
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
@@ -97,11 +100,16 @@ export default function perfil() {
           marginTop: 50,
           marginRight: 50,
           alignSelf: "center",
-        }}
-      >
+        }}>
         A escolha certa para o seu paladar!
       </Text>
-      <View style={{ width: "100%", flex: 1, paddingBottom: 20, alignItems: "center" }}>
+      <View
+        style={{
+          width: "100%",
+          flex: 1,
+          paddingBottom: 20,
+          alignItems: "center",
+        }}>
         <Galeria />
       </View>
       <Footer />

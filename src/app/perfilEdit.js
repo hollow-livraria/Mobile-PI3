@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Pressable,
+} from "react-native";
 
 import Footer from "../components/Footer";
 import TextInputEdit from "../components/TextInputEdit";
@@ -7,12 +14,25 @@ import TextInputEdit from "../components/TextInputEdit";
 import { Image } from "expo-image";
 import Octicons from "@expo/vector-icons/Octicons";
 
+import { useRouter } from "expo-router";
+
 export default function perfilEdit() {
+  const router = useRouter();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.voltar}>
-        <Octicons name="arrow-left" size={24} color="white" />
-        <Text style={{ color: "white", marginBottom: 5 }}>Voltar</Text>
+        <Pressable
+          onPress={() => router.push("/perfil")}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 10,
+          }}>
+          <Octicons name="arrow-left" size={24} color="white" />
+          <Text style={{ color: "white", marginBottom: 5 }}>Voltar</Text>
+        </Pressable>
       </View>
       <View>
         <Image
@@ -38,6 +58,7 @@ export default function perfilEdit() {
         <TextInputEdit info="cep:" />
         <TextInputEdit info="telefone:" />
         <View style={styles.salvarBtn}>
+          
           <Text>Salvar Alteração</Text>
         </View>
       </View>
