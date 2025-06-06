@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 import { Image } from "expo-image";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 
 import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
@@ -38,13 +37,17 @@ export default function perfil() {
             alignItems: "center",
             marginRight: 20,
           }}>
-          <Octicons
-            name="heart"
-            size={25}
-            color="white"
-            style={{ marginRight: 15 }}
-          />
-          <Feather name="shopping-cart" size={25} color="white" />
+          <Pressable onPress={() => router.push("/favoritos")}>
+            <Octicons
+              name="heart"
+              size={25}
+              color="white"
+              style={{ marginRight: 15 }}
+            />
+          </Pressable>
+          <Pressable onPress={() => router.push("/carrinho")}>
+            <Feather name="shopping-cart" size={25} color="white" />
+          </Pressable>
         </View>
       </View>
       <View style={styles.pedidos}>

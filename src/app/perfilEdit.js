@@ -58,7 +58,6 @@ export default function perfilEdit() {
         <TextInputEdit info="cep:" />
         <TextInputEdit info="telefone:" />
         <View style={styles.salvarBtn}>
-          
           <Text>Salvar Alteração</Text>
         </View>
       </View>
