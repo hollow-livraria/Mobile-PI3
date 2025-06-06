@@ -1,12 +1,9 @@
-// app/_layout.tsx
-import { TamaguiProvider } from "tamagui";
-import config from "../../tamagui.config";
+import React from "react";
 import { Stack } from "expo-router";
 
 export default function Layout() {
   return (
-    <TamaguiProvider config={config}>
-      <Stack
+    <Stack
         screenOptions={{
           headerStyle: {
             backgroundColor: "#FFF",
@@ -26,7 +23,9 @@ export default function Layout() {
         <Stack.Screen name="verifyEmail" options={{ headerShown: false }} />
         <Stack.Screen name="perfilEdit" options={{ headerShown: false }} />
         <Stack.Screen name="orderHistory" options={{ headerShown: false }} />
+        <Stack.Screen name="productDetails" options={{ headerShown: false }} />
+        <Stack.Screen name="carrinho" options={{ headerShown: false }} />
+        <Stack.Screen name="orderConfirmation" options={{ headerShown: false }} />
       </Stack>
-    </TamaguiProvider>
   );
 }

@@ -2,11 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, TextInput } from "react-native"; 
 import { TouchableOpacity } from "react-native";
 import { router, useRouter } from 'expo-router';
+import { ArrowLeft } from 'lucide-react';
 
 export default function ForgetPassword() {
   const router = useRouter();
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.introducao}>
         <Text style={styles.p}>Esqueceu sua senha?</Text>
         <Text style={styles.h1}>Recupere seu acesso!</Text>
@@ -30,7 +31,7 @@ export default function ForgetPassword() {
 
       </View>
 
-    </View>
+    </ScrollView>
   );
 }
  
@@ -91,26 +92,15 @@ input: {
   fontSize: 16,
   color: "#3F0D09",
   placeholderTextColor: "#3f0d0988",
-  marginBottom: 20,
-  outlineStyle: "none",
+  marginBottom: 40,
 },
-
-signinBtn: {
+signinButton: {
   backgroundColor: "#20232A",
   padding: 12,
   borderRadius: 5,
   marginTop: 20,
-  width: "48%", 
+  width: "60%",
   alignSelf: "center",
-},
-cancelBtn: {
-  padding: 12,
-  borderRadius: 5,
-  marginTop: 20,
-  width: "48%", 
-  alignSelf: "center",
-  borderColor: "#EAE5E1",
-  borderWidth: 1,
 },
 signText: {
   color: "#EAE5E1",
@@ -118,10 +108,4 @@ signText: {
   textAlign: "center",
   fontFamily: "GildaDisplay",
 },
-btnContainer: {
-  width: "80%",
-  alignSelf: "center",
-  flexDirection: "row",
-  justifyContent: "space-between",
-}
 });

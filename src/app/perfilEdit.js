@@ -7,7 +7,7 @@ import TextInputEdit from "../components/TextInputEdit";
 import { Image } from "expo-image";
 import Octicons from "@expo/vector-icons/Octicons";
 
-export default function App() {
+export default function perfilEdit() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.voltar}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#000002",
     alignItems: "center",
     paddingBottom: 30,
   },
