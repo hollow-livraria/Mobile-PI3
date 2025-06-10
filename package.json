@@ -15,9 +15,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-native-fontawesome": "^0.3.2",
-    "@tamagui/font-inter": "^1.126.12",
-    "@tamagui/metro-plugin": "^1.126.12",
-    "@tamagui/themes": "^1.126.12",
     "expo": "~52.0.38",
     "expo-constants": "~17.0.8",
     "expo-font": "~13.0.4",
@@ -31,7 +28,6 @@
     "react-native-web": "~0.19.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
     "@types/react": "~18.3.12"
   },
   "private": true
