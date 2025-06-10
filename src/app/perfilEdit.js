@@ -20,51 +20,52 @@ export default function perfilEdit() {
   const router = useRouter();
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.voltar}>
-        <Pressable
-          onPress={() => router.push("/perfil")}
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 10,
-          }}>
-          <Octicons name="arrow-left" size={24} color="white" />
-          <Text style={{ color: "white", marginBottom: 5 }}>Voltar</Text>
-        </Pressable>
-      </View>
-      <View>
-        <Image
-          style={styles.avatar}
-          source={"https://github.com/hollow-livraria.png"}
-        />
-        <Text style={{ marginVertical: 20, color: "white" }}>
-          editar avatar
-        </Text>
-      </View>
-
-      <View style={styles.dadosEditar}>
-        <Text style={{ color: "#E1D5C2", fontSize: 18, marginBottom: 20 }}>
-          Altere seus dados:
-        </Text>
-        <TextInputEdit info="nome:" />
-        <TextInputEdit info="email:" />
-        <TextInputEdit info="senha:" />
-        <TextInputEdit info="repetir senha:" />
-        <TextInputEdit info="data de nascimento:" />
-        <TextInputEdit info="cidade:" />
-        <TextInputEdit info="endereço:" />
-        <TextInputEdit info="cep:" />
-        <TextInputEdit info="telefone:" />
-        <View style={styles.salvarBtn}>
-          <Text>Salvar Alteração</Text>
+    <View style={{ flex: 1, backgroundColor: "#000002" }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.voltar}>
+          <Pressable
+            onPress={() => router.push("/perfil")}
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 10,
+            }}>
+            <Octicons name="arrow-left" size={24} color="white" />
+            <Text style={{ color: "white", marginBottom: 5 }}>Voltar</Text>
+          </Pressable>
         </View>
-      </View>
+        <View>
+          <Image
+            style={styles.avatar}
+            source={"https://github.com/hollow-livraria.png"}
+          />
+          <Text style={{ marginVertical: 20, color: "white" }}>
+            editar avatar
+          </Text>
+        </View>
 
+        <View style={styles.dadosEditar}>
+          <Text style={{ color: "#E1D5C2", fontSize: 18, marginBottom: 20 }}>
+            Altere seus dados:
+          </Text>
+          <TextInputEdit info="nome:" />
+          <TextInputEdit info="email:" />
+          <TextInputEdit info="senha:" />
+          <TextInputEdit info="repetir senha:" />
+          <TextInputEdit info="data de nascimento:" />
+          <TextInputEdit info="cidade:" />
+          <TextInputEdit info="endereço:" />
+          <TextInputEdit info="cep:" />
+          <TextInputEdit info="telefone:" />
+          <View style={styles.salvarBtn}>
+            <Text>Salvar Alteração</Text>
+          </View>
+        </View>
+      </ScrollView>
       <Footer />
       <StatusBar style="auto" />
-    </ScrollView>
+    </View>
   );
 }
 
@@ -98,7 +99,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     backgroundColor: "#20232A",
-    marginBottom: 100,
   },
   salvarBtn: {
     width: "50%",
