@@ -28,10 +28,8 @@ const styles = StyleSheet.create({
   favoritos: {
     width: "100%",
     height: 120,
-    border: "1px solid white",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "transparent",
+    borderBottomWidth: 2,
+    borderBottomColor: "white",
     marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
