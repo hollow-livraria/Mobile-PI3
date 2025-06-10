@@ -26,7 +26,8 @@ export default function perfil() {
             <Text style={styles.nomePerfil}>Livraria</Text>
             <Pressable
               style={styles.editBtn}
-              onPress={() => router.push("/perfilEdit")}>
+              onPress={() => router.push("/perfilEdit")}
+            >
               <Text style={styles.editText}>Editar perfil</Text>
             </Pressable>
           </View>
@@ -36,7 +37,8 @@ export default function perfil() {
             flexDirection: "row",
             alignItems: "center",
             marginRight: 20,
-          }}>
+          }}
+        >
           <Pressable onPress={() => router.push("/favoritos")}>
             <Octicons
               name="heart"
@@ -57,7 +59,8 @@ export default function perfil() {
             fontSize: 15,
             marginTop: 10,
             marginLeft: 10,
-          }}>
+          }}
+        >
           Meus Pedidos
         </Text>
         <Text
@@ -66,7 +69,8 @@ export default function perfil() {
             marginBottom: 15,
             marginLeft: 10,
             fontSize: 10,
-          }}>
+          }}
+        >
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
@@ -103,7 +107,8 @@ export default function perfil() {
           marginTop: 50,
           marginRight: 50,
           alignSelf: "center",
-        }}>
+        }}
+      >
         A escolha certa para o seu paladar!
       </Text>
       <View
@@ -112,7 +117,8 @@ export default function perfil() {
           flex: 1,
           paddingBottom: 20,
           alignItems: "center",
-        }}>
+        }}
+      >
         <Galeria />
       </View>
       <Footer />
@@ -183,9 +189,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   abaAjuda: {
-    width: "100%",
-    marginLeft: 30,
-    marginTop: 30,
+    flexDirection: "column",
+    paddingTop: 30,
+    paddingLeft: 30,
     gap: 10,
   },
 });

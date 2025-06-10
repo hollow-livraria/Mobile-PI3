@@ -32,7 +32,7 @@ export default function Footer() {
 
 const styles = StyleSheet.create({
   container: {
-    position: "sticky",
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
@@ -44,5 +44,6 @@ const styles = StyleSheet.create({
     padding: 15,
     boxShadow: "0px -2px 10px rgba(255, 255, 255, 0.20)",
     borderTopWidth: 1,
+    zIndex: 10,
   },
 });
