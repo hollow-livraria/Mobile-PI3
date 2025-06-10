@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 import Comment from "../components/Comment";
 
 import { Image } from "expo-image";
-
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function productDetails() {
@@ -18,98 +17,99 @@ export default function productDetails() {
   const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Header />
-      <View style={styles.imageHolder}>
-        <Image
-          source={require("../../assets/imgs/vinho_teste.png")}
-          style={{ width: 280, height: 280, borderRadius: 5 }}
-        />
-      </View>
-      <View style={styles.informationBody}>
-        <View style={styles.informationText}>
-          <Text style={{ color: "#E1D5C2", fontSize: 20 }}>R$3,000</Text>
-          <Text style={{ color: "white", fontSize: 18 }}>900ml</Text>
+    <View style={{ flex: 1, backgroundColor: "#000002" }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Header />
+        <View style={styles.imageHolder}>
+          <Image
+            source={require("../../assets/imgs/vinho_teste.png")}
+            style={{ width: 280, height: 280, borderRadius: 5 }}
+          />
         </View>
-        <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>
-          Vinho tinto muito raro e gostoso slk
-        </Text>
-        <View style={styles.quantitySelector}>
-          <Text style={{ color: "white", fontSize: 15 }}>Quantidade</Text>
-          <View
-            style={[
-              styles.quantitySelectorBtn,
-              { minWidth: 50, width: Math.max(50, 20 + String(quantity).length * 12) }
-            ]}
-          >
-            <Pressable onPress={decrement}>
-              <Text style={{ color: "white" }}>-</Text>
-            </Pressable>
-            <Text style={{ color: "white" }}>{quantity}</Text> 
-            <Pressable onPress={increment}>
-              <Text style={{ color: "white" }}>+</Text>
-            </Pressable>
+        <View style={styles.informationBody}>
+          <View style={styles.informationText}>
+            <Text style={{ color: "#E1D5C2", fontSize: 20 }}>R$3,000</Text>
+            <Text style={{ color: "white", fontSize: 18 }}>900ml</Text>
           </View>
-        </View>
-        <View style={styles.envioBody}>
-          <Text style={{ color: "#E1D5C2" }}>
-            Envio para: Carguatatuba, São Paulo
+          <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>
+            Vinho tinto muito raro e gostoso slk
           </Text>
-          <Text style={{ color: "white" }}>Frete gratis</Text>
-          <Text style={{ color: "white" }}>
-            Entrega prevista para 07/07/2004 - 14/07/2004
-          </Text>
-        </View>
-        <View style={styles.compraSegura}>
-          <Text style={{ color: "#E1D5C2" }}>Compra Segura</Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 10,
-              marginTop: 10,
-            }}
-          >
-            <View>
-              <Text style={{ color: "white" }}>{`\u2022`}Pagamento seguro</Text>
-              <Text style={{ color: "white" }}>
-                {`\u2022`}Atendimento ao cliente
-              </Text>
-            </View>
-            <View>
-              <Text style={{ color: "white" }}>{`\u2022`}Logistica segura</Text>
-              <Text style={{ color: "white" }}>
-                {`\u2022`}Proteção de privacidade
-              </Text>
+          <View style={styles.quantitySelector}>
+            <Text style={{ color: "white", fontSize: 15 }}>Quantidade</Text>
+            <View
+              style={[
+                styles.quantitySelectorBtn,
+                { minWidth: 50, width: Math.max(50, 20 + String(quantity).length * 12) }
+              ]}
+            >
+              <Pressable onPress={decrement}>
+                <Text style={{ color: "white" }}>-</Text>
+              </Pressable>
+              <Text style={{ color: "white" }}>{quantity}</Text> 
+              <Pressable onPress={increment}>
+                <Text style={{ color: "white" }}>+</Text>
+              </Pressable>
             </View>
           </View>
+          <View style={styles.envioBody}>
+            <Text style={{ color: "#E1D5C2" }}>
+              Envio para: Carguatatuba, São Paulo
+            </Text>
+            <Text style={{ color: "white" }}>Frete gratis</Text>
+            <Text style={{ color: "white" }}>
+              Entrega prevista para 07/07/2004 - 14/07/2004
+            </Text>
+          </View>
+          <View style={styles.compraSegura}>
+            <Text style={{ color: "#E1D5C2" }}>Compra Segura</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                marginTop: 10,
+              }}
+            >
+              <View>
+                <Text style={{ color: "white" }}>{`\u2022`}Pagamento seguro</Text>
+                <Text style={{ color: "white" }}>
+                  {`\u2022`}Atendimento ao cliente
+                </Text>
+              </View>
+              <View>
+                <Text style={{ color: "white" }}>{`\u2022`}Logistica segura</Text>
+                <Text style={{ color: "white" }}>
+                  {`\u2022`}Proteção de privacidade
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.additionalDetails}>
+            <Text>Informaçoes Adicionais</Text>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
+          </View>
         </View>
-        <View style={styles.additionalDetails}>
-          <Text>Informaçoes Adicionais</Text>
-          <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
+        <View style={styles.avaliarBody}>
+          <Text style={{color: "white", fontSize: 15}}>Experimente e compartilhe a sua opinião!</Text>
+          <Text style={{color: "white", fontSize: 8}}>O que você achou desse vinho? Sua avaliação é importante para nós!</Text>
+          <View style={styles.avaliarBtn}>
+            <Text style={{fontSize: 12}}>Quero avaliar :)</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.avaliarBody}>
-        <Text style={{color: "white", fontSize: 15}}>Experimente e compartilhe a sua opinião!</Text>
-        <Text style={{color: "white", fontSize: 8}}>O que você achou desse vinho? Sua avaliação é importante para nós!</Text>
-        <View style={styles.avaliarBtn}>
-          <Text style={{fontSize: 12}}>Quero avaliar :)</Text>
+        <View style={styles.commentSection}>
+          <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
+          <Comment />
+          <Comment />
+          <Comment />
         </View>
-      </View>
-      <View style={styles.commentSection}>
-        <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
-        <Comment />
-        <Comment />
-        <Comment />
-      </View>
-      <View style={styles.moreComments}>
-        <Text>Mostrar mais</Text>
-      </View>
-      <Text style={{color: "#E1D5C2", fontSize: 20, alignSelf: "flex-start", marginLeft: 35}}>Conheça tambem</Text>
-      <Galeria />
+        <View style={styles.moreComments}>
+          <Text>Mostrar mais</Text>
+        </View>
+        <Text style={{color: "#E1D5C2", fontSize: 20, alignSelf: "flex-start", marginLeft: 35}}>Conheça tambem</Text>
+        <Galeria />
+        <StatusBar style="auto" />
+      </ScrollView>
       <Footer />
-      <StatusBar style="auto" />
-    </ScrollView>
+    </View>
   );
 }
 

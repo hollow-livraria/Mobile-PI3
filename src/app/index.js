@@ -24,13 +24,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
     flexDirection: "column",
     backgroundColor: "#000002",
     alignItems: "center",
   },
   galeriaInfo: {
-    fontSize: "18px",
+    fontSize: 18,
     color: "white",
     marginTop: 20,
   },

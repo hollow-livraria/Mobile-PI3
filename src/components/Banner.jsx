@@ -17,7 +17,6 @@ export default function Banner() {
         <Text style={styles.desc}>Intensos, encorpados e repletos de aromas marcantes, os vinhos tintos brasileiros são perfeitos para quem aprecia sabor e tradição. </Text>
       </View>
       </ImageBackground>
-      
     </View>
   );
 }

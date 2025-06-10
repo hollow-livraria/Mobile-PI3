@@ -72,11 +72,11 @@ export default function perfilEdit() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    display: "flex",
+    alignItems: "center",
     flexDirection: "column",
     backgroundColor: "#000002",
-    alignItems: "center",
-    paddingBottom: 30,
+    paddingBottom: 100,
+    paddingHorizontal: 0
   },
   voltar: {
     width: "100%",
