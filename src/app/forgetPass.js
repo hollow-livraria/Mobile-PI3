@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "80%",
     alignSelf: "center",
+    marginBottom: 50,
   },
   label: {
     color: "#E1D5C2",
@@ -94,24 +95,22 @@ const styles = StyleSheet.create({
     fontFamily: "GildaDisplay",
     fontSize: 16,
     color: "#3F0D09",
-    placeholderTextColor: "#3f0d0988",
-    marginBottom: 40,
   },
   signinBtn: {
     backgroundColor: "#20232A",
-    padding: 10,
+    padding: 12,
     borderRadius: 5,
+  },
+  btnContainer: {
     marginTop: 20,
     width: "60%",
     alignSelf: "center",
   },
-  btnContainer: {
+  cancelBtn: {
     backgroundColor: "#20232A",
-    padding: 20,
+    padding: 12,
     borderRadius: 5,
-    marginTop: 20,
-    width: "60%",
-    alignSelf: "center",
+    marginBottom: 15,
   },
   signText: {
     color: "#EAE5E1",
