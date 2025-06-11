@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   galeria: {
     flex: 1,
-    widht: "100%",
+    width: "100%",
     display: "flex",
     alignItems: "center",
     gap: 20,

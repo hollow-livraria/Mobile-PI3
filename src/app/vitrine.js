@@ -7,52 +7,38 @@ import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
 
 import Octicons from "@expo/vector-icons/Octicons";
-
 import { useState, useEffect } from "react";
 
 export default function vitrine() {
+  const [produtos, setProdutos] = useState([]);
+  const [produtosFiltrados, setProdutosFiltrados] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [selectedOrder, setSelectedOrder] = useState("mais-vendidos")
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('mais-vendidos');
+  const [items, setItems] = useState([
+    { label: 'Mais Vendidos', value: 'mais-vendidos' },
+    { label: 'Menor Preço', value: 'menor-preco' },
+    { label: 'Maior Preço', value: 'maior-preco' },
+    { label: 'A-Z', value: 'az' },
+    { label: 'Z-A', value: 'za' },
+  ]);
 
-   const [produtos, setProdutos] = useState([]);
-    const [produtosFiltrados, setProdutosFiltrados] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    // const [sortType, setSortType] = useState('default');
-    // const [filtrosAtivos, setFiltrosAtivos] = useState({
-      
-    //     categoria: [],
-    //     classificacao: [],
-    //     preco: [],
-    //     regiao: []
-    // });
-
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('mais-vendidos');
-    const [items, setItems] = useState([
-      { label: 'Mais Vendidos', value: 'mais-vendidos' },
-      { label: 'Menor Preço', value: 'menor-preco' },
-      { label: 'Maior Preço', value: 'maior-preco' },
-      { label: 'A-Z', value: 'az' },
-      { label: 'Z-A', value: 'za' },
-    ]);
-
-    useEffect(() => {
-        fetch("https://localhost:8000/produtos/")
-            .then((response) => {
-                if (!response.ok) throw new Error("Erro ao buscar produtos");
-                return response.json();
-            })
-            .then((data) => {
-              console.log(data);
-              console.log(data.produtos[4].nome)
-                if (data.produtos) {
-                    setProdutos(data.produtos);
-                    setProdutosFiltrados(data.produtos);
-                }
-            })
-            .catch((error) => console.error("Erro:", error))
-            .finally(() => setIsLoading(false));
-    }, []);
+  useEffect(() => {
+    fetch("https://localhost:8000/produtos/")
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao buscar produtos");
+        return response.json();
+      })
+      .then((data) => {
+        if (data.produtos) {
+          setProdutos(data.produtos);
+          setProdutosFiltrados(data.produtos);
+        }
+      })
+      .catch((error) => console.error("Erro:", error))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -133,7 +119,9 @@ export default function vitrine() {
           <Text style={styles.filtroText}>Filtro</Text>
         </View>
       </View>
+      <View style={styles.galeriaWrapper}>
       <Galeria produtos={produtosFiltrados} />
+      </View>
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -143,7 +131,6 @@ export default function vitrine() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
     flexDirection: "column",
     backgroundColor: "#000002",
     alignItems: "center",
@@ -160,13 +147,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
     marginLeft: 8,
-  },
-  dropdownFilter: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#E1D5C2",
-    borderRadius: 5,
-    paddingVertical: 8,
   },
   dropdownWrapper: {
     position: "relative",
@@ -191,4 +171,9 @@ const styles = StyleSheet.create({
     top: 6,
     pointerEvents: "none",
   },
+  galeriaWrapper:{
+    flex: 1,
+    width: "100%",
+    overflow: "hidden"
+  }
 });
