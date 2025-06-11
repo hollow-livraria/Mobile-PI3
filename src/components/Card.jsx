@@ -10,22 +10,20 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "expo-router";
 
-export default function Card() {
-    const router = useRouter();
+export default function Card({ produto }) {
+  const router = useRouter();
   return (
     <View style={styles.cardBody}>
       <Pressable onPress={() => router.push("/productDetails")}>
         <Image
-          source={require("../../assets/imgs/vinho_teste.png")}
+          source={produto?.fotoVinho}
           style={{ width: 100, height: 100, borderRadius: 5 }}
         />
       </Pressable>
-      <View style={styles.bar}></View>
-      <Text style={styles.title}>vinho muito legal</Text>
-      <View style={styles.compra}>
-        <Text>R$ 10,00</Text>
-        <FontAwesomeIcon icon={faPlus} style={styles.add} />
-      </View>
+      <Text style={styles.title}>{produto?.nome || "Sem nome"}</Text>
+      <Text style={styles.preco}>
+        R$ {produto?.preco?.toFixed ? produto.preco.toFixed(2) : produto?.preco || "0,00"}
+      </Text>
     </View>
   );
 }
@@ -40,6 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EAE5E1",
     padding: 20,
     borderRadius: 5,
+    justifyContent: "center",
   },
   bar: {
     width: "100%",
@@ -49,6 +48,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
+    marginTop: 10,
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  preco: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 5,
   },
   compra: {
     display: "flex",

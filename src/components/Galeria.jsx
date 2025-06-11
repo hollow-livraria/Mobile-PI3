@@ -7,18 +7,13 @@ import { View, StyleSheet, Text, ScrollView } from "react-native";
 
 import Card from "./Card";
 
-export default function Galeria() {
+export default function Galeria({ produtos = [] }) {
   return (
     <View style={styles.galeria}>
       <ScrollView contentContainerStyle={styles.galeriaCards}>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {produtos.map((produto, idx) => (
+          <Card key={produto.id || idx} produto={produto} />
+        ))}
       </ScrollView>
     </View>
   );
@@ -36,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 20,
     marginTop: 20,
+    paddingBottom: 90,
   },
   galeriaCards: {
     display: "flex",

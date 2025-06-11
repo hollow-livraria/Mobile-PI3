@@ -8,7 +8,40 @@ import Footer from "../components/Footer";
 import Octicons from "@expo/vector-icons/Octicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
+import { useState, useEffect } from "react";
+
 export default function vitrine() {
+
+   const [produtos, setProdutos] = useState([]);
+    const [produtosFiltrados, setProdutosFiltrados] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    // const [sortType, setSortType] = useState('default');
+    // const [filtrosAtivos, setFiltrosAtivos] = useState({
+      
+    //     categoria: [],
+    //     classificacao: [],
+    //     preco: [],
+    //     regiao: []
+    // });
+
+    useEffect(() => {
+        fetch("https://localhost:8000/produtos/")
+            .then((response) => {
+                if (!response.ok) throw new Error("Erro ao buscar produtos");
+                return response.json();
+            })
+            .then((data) => {
+              console.log(data);
+              console.log(data.produtos[4].nome)
+                if (data.produtos) {
+                    setProdutos(data.produtos);
+                    setProdutosFiltrados(data.produtos);
+                }
+            })
+            .catch((error) => console.error("Erro:", error))
+            .finally(() => setIsLoading(false));
+    }, []);
+
   return (
     <View style={styles.container}>
       <Header />
@@ -22,7 +55,7 @@ export default function vitrine() {
           <Text style={styles.filtroText}>Filtro</Text>
         </View>
       </View>
-      <Galeria />
+      <Galeria produtos={produtosFiltrados} />
       <Footer />
       <StatusBar style="auto" />
     </View>
