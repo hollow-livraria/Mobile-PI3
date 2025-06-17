@@ -1,93 +1,97 @@
-import { View, StyleSheet, Text } from "react-native";
+import React, { useState } from 'react';
+import { View, TextInput, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, ScrollView } from 'react-native';
 import { Image } from "expo-image";
-import { Button, TextInput } from "react-native-web";
-import { TouchableOpacity } from "react-native";
-import { router, useRouter } from "expo-router";
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const router = useRouter();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (name, value) => {
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await fetch('https://localhost:8000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password
+        })
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Erro ao fazer login');
+      }
+      const data = await response.json();
+      // Salva os dados do usuário e token no AsyncStorage
+      await AsyncStorage.setItem('user', JSON.stringify(data.user || {}));
+      if (data.token) {
+        await AsyncStorage.setItem('token', data.token);
+      }
+      Alert.alert('Login realizado!', 'Bem-vindo!');
+      router.push('/'); // Redireciona para a index
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require("../../assets/imgs/logo-vivant-clara.png")}
-      />
-      <Text style={styles.p}>Acesse sua conta</Text>
-      <Text style={styles.h1}>Bem vindo de volta!</Text>
-
+    <ScrollView style={styles.container}>
+      <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
+      <Text style={styles.h1}>Entrar na sua conta</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="exemplo@gmail.com" />
+        <Text style={styles.label}>E-mail</Text>
+        <TextInput
+          placeholder="exemplo@gmail.com"
+          value={form.email}
+          onChangeText={v => handleChange('email', v)}
+          keyboardType="email-address"
+          style={styles.input}
+        />
       </View>
-
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Senha</Text>
-        <TextInput style={styles.input} placeholder="Digite sua senha..." />
-      </View>
-
-      <TouchableOpacity onPress={() => router.push("/forgetPass")}>
-        <Text style={styles.p}>Esqueceu sua senha?</Text>
-      </TouchableOpacity>
-
-      <View style={styles.separador}>
-        <View style={styles.horizontalLine} />
-        <Text style={styles.pSeparador}>OU</Text>
-        <View style={styles.horizontalLine} />
-      </View>
-
-      <TouchableOpacity
-        style={styles.googleButton}
-        onPress={() => console.log("Botão clicado!")}>
-        <Image
-          style={styles.buttonIcon}
-          source={require("../../assets/imgs/google-logo.png")}
+        <TextInput
+          placeholder="Digite sua senha..."
+          value={form.password}
+          onChangeText={v => handleChange('password', v)}
+          secureTextEntry
+          style={styles.input}
         />
-        <Text style={styles.buttonText}>Continuar com o Google</Text>
+      </View>
+      {error ? <Text style={{ color: 'red', marginBottom: 8 }}>{error}</Text> : null}
+      {loading ? <ActivityIndicator /> : (
+        <TouchableOpacity style={styles.signinButton} onPress={handleSubmit}>
+          <Text style={styles.signText}>Entrar</Text>
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity onPress={() => router.push('/cadastro')}>
+        <Text style={styles.cadastroLink}>Não tem conta? Cadastre-se</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.signinButton}
-        onPress={() => router.push("/")}>
-        <Text style={styles.signText}>Entrar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => router.push("/cadastro")}>
-        <Text style={styles.p2}>
-          Não tem conta?{" "}
-          <Text style={{ color: "#E1D5C2" }}>Cadastre-se já!</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000002",
+    backgroundColor: "#000002"
   },
   logo: {
-    width: "80%",
+    width: '80%',
     height: 200,
     marginTop: 100,
     alignSelf: "center",
-  },
-  p: {
-    color: "#E1D5C2",
-    fontSize: 20,
-    textAlign: "left",
-    marginTop: 20,
-    marginLeft: 40,
-    fontFamily: "GildaDisplay",
-  },
-  p2: {
-    color: "#EAE5E1",
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 20,
-    marginLeft: 40,
-    fontFamily: "GildaDisplay",
-    marginBottom: "10%",
   },
   h1: {
     color: "#EAE5E1",
@@ -120,47 +124,6 @@ const styles = StyleSheet.create({
     placeholderTextColor: "#3f0d0988",
     outlineStyle: "none",
   },
-  pSeparador: {
-    color: "#EAE5E1",
-    fontSize: 20,
-    textAlign: "center",
-    marginHorizontal: 40,
-    fontFamily: "GildaDisplay",
-  },
-  horizontalLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#EAE5E1",
-  },
-  separador: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 20,
-    width: "80%",
-    alignSelf: "center",
-  },
-  googleButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#EAE5E1",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    width: "50%",
-    alignSelf: "center",
-  },
-  buttonIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-  },
-  buttonText: {
-    color: "#3F0D09",
-    fontSize: 16,
-    fontFamily: "GildaDisplay",
-  },
   signinButton: {
     backgroundColor: "#20232A",
     padding: 12,
@@ -174,5 +137,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontFamily: "GildaDisplay",
+  },
+  cadastroLink: {
+    color: "#E1D5C2",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 24,
+    fontFamily: "GildaDisplay",
+    textDecorationLine: "underline",
   },
 });

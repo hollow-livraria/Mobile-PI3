@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ActivityIndicator } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
@@ -13,6 +15,43 @@ import { useRouter } from "expo-router";
 
 export default function perfil() {
   const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Busca os dados do usuário salvos no AsyncStorage após o login
+    const fetchUser = async () => {
+      try {
+        const userData = await AsyncStorage.getItem("user");
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#8B5C2A" />
+      </View>
+    );
+  }
+
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.error}>
+          Não foi possível carregar os dados do perfil.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -20,10 +59,10 @@ export default function perfil() {
         <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
           <Image
             style={styles.avatar}
-            source={"https://github.com/hollow-livraria.png"}
+            source={user.avatar || "https://i.imgur.com/default-avatar.png"}
           />
           <View style={{ marginTop: 20 }}>
-            <Text style={styles.nomePerfil}>Livraria</Text>
+            <Text style={styles.nomePerfil}>{user.nome}</Text>
             <Pressable
               style={styles.editBtn}
               onPress={() => router.push("/perfilEdit")}
@@ -193,5 +232,9 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 30,
     gap: 10,
+  },
+  error: {
+    color: "red",
+    fontSize: 16,
   },
 });
