@@ -31,11 +31,12 @@ export default function Login() {
         throw new Error(data.message || 'Erro ao fazer login');
       }
       const data = await response.json();
-      // Salva os dados do usuário e token no AsyncStorage
-      await AsyncStorage.setItem('user', JSON.stringify(data.user || {}));
+      // Salva o token
       if (data.token) {
         await AsyncStorage.setItem('token', data.token);
       }
+      // Salva apenas o email do usuário logado
+      await AsyncStorage.setItem('user', JSON.stringify({ email: form.email }));
       Alert.alert('Login realizado!', 'Bem-vindo!');
       router.push('/'); // Redireciona para a index
     } catch (err) {

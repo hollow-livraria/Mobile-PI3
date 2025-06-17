@@ -3,6 +3,7 @@ import { View, TextInput, Button, Text, TouchableOpacity, ActivityIndicator, Ale
 import { Picker } from '@react-native-picker/picker';
 import { Image } from "expo-image";
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Cadastro() {
   const navigation = useNavigation();
@@ -91,6 +92,23 @@ export default function Cadastro() {
         const data = await response.json();
         throw new Error(data.message || 'Erro ao cadastrar');
       }
+      // Salva o cadastro atual em um array de cadastros
+      const novoCadastro = {
+        cpf: formData.cpf,
+        nome: formData.nome,
+        email: formData.email,
+        sexo: formData.sexo,
+        telefone: formData.telefone,
+        nascimento: formData.nascimento,
+        avatar: formData.avatar
+      };
+      const cadastrosStr = await AsyncStorage.getItem('cadastros');
+      let cadastros = cadastrosStr ? JSON.parse(cadastrosStr) : [];
+      // Evita duplicidade pelo email
+      cadastros = cadastros.filter(c => c.email !== formData.email);
+      cadastros.push(novoCadastro);
+      await AsyncStorage.setItem('cadastros', JSON.stringify(cadastros));
+
       Alert.alert('Cadastro realizado!', 'Você será redirecionado para o login.');
       navigation.navigate('login');
     } catch (err) {

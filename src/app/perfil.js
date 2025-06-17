@@ -22,12 +22,18 @@ export default function perfil() {
     // Busca os dados do usuário salvos no AsyncStorage após o login
     const fetchUser = async () => {
       try {
-        const userData = await AsyncStorage.getItem("user");
-        if (userData) {
-          setUser(JSON.parse(userData));
+        const userStr = await AsyncStorage.getItem("user");
+        const cadastrosStr = await AsyncStorage.getItem("cadastros");
+        if (userStr && cadastrosStr) {
+          const user = JSON.parse(userStr);
+          const cadastros = JSON.parse(cadastrosStr);
+          const cadastro = cadastros.find((c) => c.email === user.email);
+          if (cadastro) {
+            setUser(cadastro);
+          }
         }
       } catch (err) {
-        console.error("Erro ao buscar usuário:", err);
+        console.error("Erro ao buscar usuário/cadastro:", err);
       } finally {
         setLoading(false);
       }
