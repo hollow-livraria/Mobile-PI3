@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
@@ -14,6 +15,8 @@ import { useRouter } from "expo-router";
 export default function PerfilEdit() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [form, setForm] = useState({
     nome: "",
     email: "",
@@ -31,6 +34,7 @@ export default function PerfilEdit() {
         const cadastrosStr = await AsyncStorage.getItem("cadastros");
         if (userStr && cadastrosStr) {
           const user = JSON.parse(userStr);
+          setUserEmail(user.email);
           const cadastros = JSON.parse(cadastrosStr);
           const cadastro = cadastros.find((c) => c.email === user.email);
           if (cadastro) {
@@ -56,6 +60,104 @@ export default function PerfilEdit() {
 
   const handleChange = (name, value) => {
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const emailDuplicadoNoBackend = async (email, meuEmail = null) => {
+    try {
+      const res = await fetch("https://localhost:8000/auth/signup"); // ajuste o endpoint conforme seu backend
+      if (!res.ok) return false;
+      const users = await res.json();
+      // Só impede se o email já existe em outro usuário (não o próprio)
+      return users.some((u) => u.email === email && u.email !== meuEmail);
+    } catch (e) {
+      return false; // Em caso de erro, não bloqueia (mas pode ajustar para bloquear se preferir)
+    }
+  };
+
+  const validateForm = async () => {
+    // Campos obrigatórios
+    if (
+      !form.nome ||
+      !form.email ||
+      !form.cpf ||
+      !form.sexo ||
+      !form.telefone ||
+      !form.nascimento
+    ) {
+      setError("Preencha todos os campos obrigatórios");
+      return false;
+    }
+    // Email válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setError("E-mail inválido");
+      return false;
+    }
+    // Email único (exceto o próprio)
+    const cadastrosStr = await AsyncStorage.getItem("cadastros");
+    if (cadastrosStr) {
+      const cadastros = JSON.parse(cadastrosStr);
+      const emailJaExiste = cadastros.some(
+        (c) => c.email === form.email && c.email !== userEmail
+      );
+      if (emailJaExiste) {
+        setError("Já existe um cadastro com esse e-mail");
+        return false;
+      }
+    }
+    const emailJaExiste = await emailDuplicadoNoBackend(form.email, userEmail);
+    if (emailJaExiste) {
+      setError('Já existe um cadastro com esse e-mail');
+      setLoading(false);
+      return;
+    }
+    // CPF deve ter 11 dígitos numéricos
+    if (form.cpf.replace(/\D/g, "").length !== 11) {
+      setError("CPF inválido");
+      return false;
+    }
+    // Telefone deve ter pelo menos 10 dígitos
+    if (form.telefone.replace(/\D/g, "").length < 10) {
+      setError("Telefone inválido");
+      return false;
+    }
+    // Nascimento deve ter 8 dígitos (DDMMAAAA)
+    if (form.nascimento.replace(/\D/g, "").length !== 8) {
+      setError("Data de nascimento inválida");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  const handleSave = async () => {
+    if (!(await validateForm())) return;
+    try {
+      const userStr = await AsyncStorage.getItem("user");
+      const cadastrosStr = await AsyncStorage.getItem("cadastros");
+      if (userStr && cadastrosStr) {
+        const user = JSON.parse(userStr);
+        let cadastros = JSON.parse(cadastrosStr);
+
+        // Atualiza o cadastro correspondente ao email do usuário logado
+        cadastros = cadastros.map((cadastro) =>
+          cadastro.email === userEmail ? { ...cadastro, ...form } : cadastro
+        );
+
+        // Salva o array atualizado
+        await AsyncStorage.setItem("cadastros", JSON.stringify(cadastros));
+        // Atualiza o AsyncStorage do usuário logado também
+        await AsyncStorage.setItem("user", JSON.stringify({ ...form }));
+
+        Alert.alert("Sucesso", "Dados atualizados com sucesso!");
+
+        // Navega para o perfil e força atualização
+        router.replace("/perfil");
+      }
+    } catch (err) {
+      Alert.alert("Erro", "Não foi possível atualizar os dados.");
+      console.error("Erro ao salvar alterações:", err);
+    }
   };
 
   if (loading) {
@@ -136,12 +238,10 @@ export default function PerfilEdit() {
           onChangeText={(v) => handleChange("avatar", v)}
         />
       </View>
-      <TouchableOpacity
-        style={styles.saveBtn}
-        onPress={() => {
-          /* salvar alterações */
-        }}
-      >
+      {error ? (
+        <Text style={{ color: "red", marginBottom: 8 }}>{error}</Text>
+      ) : null}
+      <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
         <Text style={styles.saveText}>Salvar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.cancelBtn} onPress={() => router.back()}>
