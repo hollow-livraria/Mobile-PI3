@@ -36,7 +36,9 @@ export default function Login() {
         await AsyncStorage.setItem('token', data.token);
       }
       // Salva apenas o email do usuário logado
-      await AsyncStorage.setItem('user', JSON.stringify({ email: form.email }));
+      if (data.user) {
+        await AsyncStorage.setItem('user', JSON.stringify(data.user));
+      }
       Alert.alert('Login realizado!', 'Bem-vindo!');
       router.push('/'); // Redireciona para a index
     } catch (err) {

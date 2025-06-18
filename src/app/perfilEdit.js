@@ -131,32 +131,45 @@ export default function PerfilEdit() {
   };
 
   const handleSave = async () => {
-    if (!(await validateForm())) return;
+    setLoading(true);
+    setError('');
     try {
       const userStr = await AsyncStorage.getItem("user");
-      const cadastrosStr = await AsyncStorage.getItem("cadastros");
-      if (userStr && cadastrosStr) {
-        const user = JSON.parse(userStr);
-        let cadastros = JSON.parse(cadastrosStr);
-
-        // Atualiza o cadastro correspondente ao email do usuário logado
-        cadastros = cadastros.map((cadastro) =>
-          cadastro.email === userEmail ? { ...cadastro, ...form } : cadastro
-        );
-
-        // Salva o array atualizado
-        await AsyncStorage.setItem("cadastros", JSON.stringify(cadastros));
-        // Atualiza o AsyncStorage do usuário logado também
-        await AsyncStorage.setItem("user", JSON.stringify({ ...form }));
-
-        Alert.alert("Sucesso", "Dados atualizados com sucesso!");
-
-        // Navega para o perfil e força atualização
-        router.replace("/perfil");
+      if (!userStr) {
+        setError("Usuário não encontrado.");
+        setLoading(false);
+        return;
       }
+      const user = JSON.parse(userStr);
+
+      const formParaEnviar = {
+        ...form,
+        cpf: form.cpf.replace(/\D/g, '').slice(0, 11), // só números, máximo 11 dígitos
+        password: form.password || '', // garanta que password está presente
+      };
+
+      // Envie para o backend (ajuste o endpoint conforme seu backend)
+      const response = await fetch(`https://localhost:8000/users/${user.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formParaEnviar)
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || "Erro ao atualizar perfil.");
+        setLoading(false);
+        return;
+      }
+
+      // Atualize o AsyncStorage local com o retorno do backend
+      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      Alert.alert("Sucesso", "Dados atualizados com sucesso!");
+      router.replace("/perfil");
     } catch (err) {
-      Alert.alert("Erro", "Não foi possível atualizar os dados.");
-      console.error("Erro ao salvar alterações:", err);
+      setError(err.message || "Erro ao atualizar perfil.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -188,6 +201,16 @@ export default function PerfilEdit() {
           value={form.email}
           onChangeText={(v) => handleChange("email", v)}
           keyboardType="email-address"
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Senha"
+          value={form.password}
+          onChangeText={v => handleChange("password", v)}
+          secureTextEntry
         />
       </View>
       <View style={styles.inputContainer}>
