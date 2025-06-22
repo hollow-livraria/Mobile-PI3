@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -15,13 +15,13 @@ export default function vitrine() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('mais-vendidos');
+  const [value, setValue] = useState("mais-vendidos");
   const [items, setItems] = useState([
-    { label: 'Mais Vendidos', value: 'mais-vendidos' },
-    { label: 'Menor Preço', value: 'menor-preco' },
-    { label: 'Maior Preço', value: 'maior-preco' },
-    { label: 'A-Z', value: 'az' },
-    { label: 'Z-A', value: 'za' },
+    { label: "Mais Vendidos", value: "mais-vendidos" },
+    { label: "Menor Preço", value: "menor-preco" },
+    { label: "Maior Preço", value: "maior-preco" },
+    { label: "A-Z", value: "az" },
+    { label: "Z-A", value: "za" },
   ]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function vitrine() {
           setValue={setValue}
           setItems={setItems}
           style={{
-            backgroundColor: '#E1D5C2',
+            backgroundColor: "#E1D5C2",
             borderRadius: 10,
             borderWidth: 0,
             minHeight: 38,
@@ -62,49 +62,49 @@ export default function vitrine() {
             elevation: 4,
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.10,
+            shadowOpacity: 0.1,
             shadowRadius: 4,
           }}
           dropDownContainerStyle={{
-            backgroundColor: '#E1D5C2',
+            backgroundColor: "#E1D5C2",
             borderRadius: 10,
             borderWidth: 0,
             width: 180,
             elevation: 4,
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.10,
+            shadowOpacity: 0.1,
             shadowRadius: 4,
           }}
           textStyle={{
-            color: '#222',
-            fontWeight: 'bold',
+            color: "#222",
+            fontWeight: "bold",
             fontSize: 15,
-            fontFamily: 'Gilda Display',
+            fontFamily: "Gilda Display",
           }}
           labelStyle={{
-            color: '#222',
-            fontWeight: 'bold',
+            color: "#222",
+            fontWeight: "bold",
             fontSize: 15,
-            fontFamily: 'Gilda Display',
+            fontFamily: "Gilda Display",
           }}
           selectedItemLabelStyle={{
-            color: '#8B5C2A',
-            fontWeight: 'bold',
+            color: "#8B5C2A",
+            fontWeight: "bold",
           }}
           listItemContainerStyle={{
             borderRadius: 8,
             marginVertical: 2,
             height: 32,
             minHeight: 32,
-            justifyContent: "center"
+            justifyContent: "center",
           }}
           listItemLabelStyle={{
             fontSize: 15,
             paddingVertical: 2,
           }}
           arrowIconStyle={{
-            tintColor: '#8B5C2A',
+            tintColor: "#8B5C2A",
             width: 24,
             height: 24,
           }}
@@ -114,13 +114,19 @@ export default function vitrine() {
           dropDownDirection="AUTO"
           zIndex={1000}
         />
-        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 12}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: 12,
+          }}>
           <Octicons name="filter" size={26} color="white" />
           <Text style={styles.filtroText}>Filtro</Text>
         </View>
       </View>
       <View style={styles.galeriaWrapper}>
-      <Galeria produtos={produtosFiltrados} />
+        <Galeria produtos={produtosFiltrados} />
       </View>
       <Footer />
       <StatusBar style="auto" />
@@ -171,9 +177,9 @@ const styles = StyleSheet.create({
     top: 6,
     pointerEvents: "none",
   },
-  galeriaWrapper:{
+  galeriaWrapper: {
     flex: 1,
     width: "100%",
-    overflow: "hidden"
-  }
+    overflow: "hidden",
+  },
 });

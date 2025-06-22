@@ -3,14 +3,31 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
+import { useEffect, useState } from "react";
 
 export default function favoritos() {
+  const [produtos, setProdutos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://localhost:8000/produtos/")
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao buscar produtos");
+        return response.json();
+      })
+      .then((data) => {
+        if (data.produtos) setProdutos(data.produtos);
+      })
+      .catch((error) => console.error("Erro:", error))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.favoritos}>
-        <Text style={{fontSize: 25, color: "white"}}>Favoritos</Text>
+        <Text style={{ fontSize: 25, color: "white" }}>Favoritos</Text>
       </View>
-      <Galeria />
+      <Galeria produtos={produtos} loading={isLoading} />
       <Footer />
       <StatusBar style="auto" />
     </View>

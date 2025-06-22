@@ -3,41 +3,39 @@
 //                            |、˜〵
 //                            じしˍ,)ノ
 
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, ScrollView, Pressable } from "react-native";
+import { useRouter } from "expo-router";
 
 import Card from "./Card";
 
 export default function Galeria({ produtos = [] }) {
+  const router = useRouter();
+
   return (
-    <View style={styles.galeria}>
-      <ScrollView contentContainerStyle={styles.galeriaCards}>
+    <View style={{ width: "100%" }}>
+      <ScrollView
+        contentContainerStyle={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 20,
+        }}
+        horizontal={false}
+      >
         {produtos.map((produto, idx) => (
-          <Card key={produto.id || idx} produto={produto} />
+          <Pressable
+            key={produto.idProduto || idx}
+            onPress={() =>
+              router.push({
+                pathname: "/productDetails",
+                params: { id: String(produto.idProduto) },
+              })
+            }
+          >
+            <Card produto={produto} />
+          </Pressable>
         ))}
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flex: 1,
-    paddingVertical: 20,
-  },
-  galeria: {
-    flex: 1,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    gap: 20,
-    marginTop: 20,
-    paddingBottom: 10,
-  },
-  galeriaCards: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 20,
-  },
-});

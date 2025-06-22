@@ -3,23 +3,16 @@
 //                            |、˜〵
 //                           じしˍ,)ノ
 
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
-import { useRouter } from "expo-router";
 
 export default function Card({ produto }) {
-  const router = useRouter();
   return (
     <View style={styles.cardBody}>
-      <Pressable onPress={() => router.push("/productDetails")}>
-        <Image
-          source={produto?.fotoVinho}
-          style={{ width: 100, height: 100, borderRadius: 5 }}
-        />
-      </Pressable>
+      <Image
+        source={produto?.fotoVinho}
+        style={{ width: 100, height: 100, borderRadius: 5 }}
+      />
       <Text style={styles.title}>{produto?.nome || "Sem nome"}</Text>
       <Text style={styles.preco}>
         R$ {produto?.preco?.toFixed ? produto.preco.toFixed(2) : produto?.preco || "0,00"}

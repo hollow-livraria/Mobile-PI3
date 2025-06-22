@@ -1,6 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  TextInput,
+  Modal,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { useLocalSearchParams } from "expo-router";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -8,13 +19,104 @@ import Footer from "../components/Footer";
 import Comment from "../components/Comment";
 
 import { Image } from "expo-image";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function productDetails() {
+  const { id } = useLocalSearchParams();
+  const [produto, setProduto] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [showInfo, setShowInfo] = useState(false);
+  const [comentarios, setComentarios] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewNota, setReviewNota] = useState(0);
+  const [usuarios, setUsuarios] = useState([]);
 
-  const increment = () => setQuantity(q => q + 1);
-  const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
+  useEffect(() => {
+    if (!id) return;
+    fetch(`https://localhost:8000/produtos/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const produtoData = data.produto || data;
+        setProduto(produtoData);
+        // Não setar comentários aqui
+      })
+      .catch((err) => {
+        console.error("Erro no fetch:", err);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    fetch(`https://localhost:8000/avaliacao`)
+      .then((res) => res.json())
+      .then((data) => {
+        // data pode ser { avaliacoes: [...] } ou apenas um array
+        const avaliacoes = data.avaliacoes || data;
+        // Filtra só as avaliações do produto atual
+        const comentariosDoProduto = avaliacoes.filter(
+          (a) => String(a.idProduto) === String(id)
+        );
+        setComentarios(comentariosDoProduto);
+      })
+      .catch((err) => console.error("Erro ao buscar comentários:", err));
+  }, [id]);
+
+  // No topo do seu componente
+  useEffect(() => {
+    fetch("https://localhost:8000/users")
+      .then((res) => res.json())
+      .then((data) => {
+        // Garante que usuarios sempre será um array
+        if (Array.isArray(data)) setUsuarios(data);
+        else if (Array.isArray(data.users)) setUsuarios(data.users);
+        else setUsuarios([]);
+      })
+      .catch((err) => console.error("Erro ao buscar usuários:", err));
+  }, []);
+
+  const increment = () => setQuantity((q) => q + 1);
+  const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
+
+  // Função para enviar avaliação
+  const enviarAvaliacao = () => {
+    fetch("https://localhost:8000/avaliacao", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuarioCpf: "12345678901", // Troque pelo CPF do usuário logado
+        idProduto: Number(id),
+        avaliacao: reviewNota,
+        conteudo: reviewText,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        Alert.alert("Obrigado!", "Avaliação enviada com sucesso!");
+        setModalVisible(false);
+        setReviewText("");
+        setReviewNota(0);
+        // Atualiza comentários após enviar
+        fetch(`https://localhost:8000/avaliacao`)
+          .then((res) => res.json())
+          .then((data) => {
+            const avaliacoes = data.avaliacoes || data;
+            const comentariosDoProduto = avaliacoes.filter(
+              (a) => String(a.idProduto) === String(id)
+            );
+            setComentarios(comentariosDoProduto);
+          });
+      })
+      .catch(() =>
+        Alert.alert("Erro", "Não foi possível enviar sua avaliação.")
+      );
+  };
+
+  if (loading) return <Text style={{ color: "white" }}>Carregando...</Text>;
+  if (!produto)
+    return <Text style={{ color: "white" }}>Produto não encontrado</Text>;
 
   return (
     <View style={{ flex: 1, backgroundColor: "#000002" }}>
@@ -22,30 +124,41 @@ export default function productDetails() {
         <Header />
         <View style={styles.imageHolder}>
           <Image
-            source={require("../../assets/imgs/vinho_teste.png")}
+            source={{
+              uri:
+                produto.imagem ||
+                produto.fotoVinho ||
+                "https://i.imgur.com/default-avatar.png",
+            }}
             style={{ width: 280, height: 280, borderRadius: 5 }}
           />
         </View>
         <View style={styles.informationBody}>
           <View style={styles.informationText}>
-            <Text style={{ color: "#E1D5C2", fontSize: 20 }}>R$3,000</Text>
-            <Text style={{ color: "white", fontSize: 18 }}>900ml</Text>
+            <Text style={{ color: "#E1D5C2", fontSize: 20 }}>
+              R${produto.preco ?? "0,00"}
+            </Text>
+            <Text style={{ color: "white", fontSize: 18 }}>
+              {produto.volume ?? ""}
+            </Text>
+            <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>
+              {produto.nome ?? "Sem nome"}
+            </Text>
           </View>
-          <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>
-            Vinho tinto muito raro e gostoso slk
-          </Text>
           <View style={styles.quantitySelector}>
             <Text style={{ color: "white", fontSize: 15 }}>Quantidade</Text>
             <View
               style={[
                 styles.quantitySelectorBtn,
-                { minWidth: 50, width: Math.max(50, 20 + String(quantity).length * 12) }
-              ]}
-            >
+                {
+                  minWidth: 50,
+                  width: Math.max(50, 20 + String(quantity).length * 12),
+                },
+              ]}>
               <Pressable onPress={decrement}>
                 <Text style={{ color: "white" }}>-</Text>
               </Pressable>
-              <Text style={{ color: "white" }}>{quantity}</Text> 
+              <Text style={{ color: "white" }}>{quantity}</Text>
               <Pressable onPress={increment}>
                 <Text style={{ color: "white" }}>+</Text>
               </Pressable>
@@ -60,52 +173,159 @@ export default function productDetails() {
               Entrega prevista para 07/07/2004 - 14/07/2004
             </Text>
           </View>
-          <View style={styles.compraSegura}>
-            <Text style={{ color: "#E1D5C2" }}>Compra Segura</Text>
+          {/* Botão de informações adicionais */}
+          <Pressable
+            style={styles.additionalDetails}
+            onPress={() => setShowInfo((v) => !v)}>
+            <Text>Informações Adicionais</Text>
+            <MaterialIcons
+              name={showInfo ? "arrow-drop-down" : "arrow-forward-ios"}
+              size={24}
+              color="black"
+            />
+          </Pressable>
+        </View>
+        {showInfo && produto && (
+          <View style={styles.infoBox}>
+            <View style={styles.infoHeader}>
+              <Text style={styles.infoTitle}>Informações Adicionais</Text>
+              <Pressable onPress={() => setShowInfo(false)}>
+                <MaterialIcons name="close" size={28} color="#3B2C1A" />
+              </Pressable>
+            </View>
+            <Text style={styles.infoText}>
+              {produto.classificacao &&
+                `Classificação: ${produto.classificacao}\n`}
+              {produto.categoria && `Categoria: ${produto.categoria}\n`}
+              {produto.regiao && `Região: ${produto.regiao}\n`}
+              {produto.gustativo && `Gustativo: ${produto.gustativo}\n`}
+              {produto.olfativo && `Olfativo: ${produto.olfativo}\n`}
+              {produto.amadurecimento &&
+                `Amadurecimento: ${produto.amadurecimento}\n`}
+              {produto.temperatura && `Temperatura: ${produto.temperatura}\n`}
+              {produto.uvas && `Uvas: ${produto.uvas}\n`}
+              {produto.ph && `PH: ${produto.ph}\n`}
+              {produto.acidezTotal && `Acidez total: ${produto.acidezTotal}\n`}
+              {produto.acucarAdicional &&
+                `Açúcar adicional: ${produto.acucarAdicional}\n`}
+            </Text>
+          </View>
+        )}
+        <View style={styles.avaliarBody}>
+          <Text style={{ color: "white", fontSize: 15 }}>
+            Experimente e compartilhe a sua opinião!
+          </Text>
+          <Text style={{ color: "white", fontSize: 8 }}>
+            O que você achou desse vinho? Sua avaliação é importante para nós!
+          </Text>
+          <TouchableOpacity
+            style={styles.avaliarBtn}
+            onPress={() => setModalVisible(true)}>
+            <Text style={{ fontSize: 12 }}>Quero avaliar :)</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Modal de avaliação */}
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#000a",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
             <View
               style={{
-                flexDirection: "row",
-                gap: 10,
-                marginTop: 10,
-              }}
-            >
-              <View>
-                <Text style={{ color: "white" }}>{`\u2022`}Pagamento seguro</Text>
-                <Text style={{ color: "white" }}>
-                  {`\u2022`}Atendimento ao cliente
-                </Text>
+                backgroundColor: "#fff",
+                borderRadius: 10,
+                padding: 20,
+                width: "85%",
+              }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10 }}>
+                Avalie este vinho
+              </Text>
+              <TextInput
+                placeholder="Escreva sua opinião..."
+                value={reviewText}
+                onChangeText={setReviewText}
+                multiline
+                style={{
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 5,
+                  minHeight: 60,
+                  marginBottom: 15,
+                  padding: 8,
+                  textAlignVertical: "top",
+                }}
+              />
+              <Text style={{ marginBottom: 5 }}>Nota:</Text>
+              <View style={{ flexDirection: "row", marginBottom: 15 }}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Pressable key={n} onPress={() => setReviewNota(n)}>
+                    <MaterialIcons
+                      name={reviewNota >= n ? "star" : "star-border"}
+                      size={32}
+                      color="#E1D5C2"
+                    />
+                  </Pressable>
+                ))}
               </View>
-              <View>
-                <Text style={{ color: "white" }}>{`\u2022`}Logistica segura</Text>
-                <Text style={{ color: "white" }}>
-                  {`\u2022`}Proteção de privacidade
-                </Text>
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+                <Pressable
+                  onPress={() => setModalVisible(false)}
+                  style={{ marginRight: 20 }}>
+                  <Text style={{ color: "#888" }}>Cancelar</Text>
+                </Pressable>
+                <Pressable
+                  onPress={enviarAvaliacao}
+                  style={{
+                    backgroundColor: "#E1D5C2",
+                    borderRadius: 5,
+                    paddingVertical: 8,
+                    paddingHorizontal: 20,
+                  }}
+                  disabled={reviewNota === 0 || !reviewText.trim()}>
+                  <Text style={{ color: "#3B2C1A", fontWeight: "bold" }}>
+                    Enviar
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
-          <View style={styles.additionalDetails}>
-            <Text>Informaçoes Adicionais</Text>
-            <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-          </View>
-        </View>
-        <View style={styles.avaliarBody}>
-          <Text style={{color: "white", fontSize: 15}}>Experimente e compartilhe a sua opinião!</Text>
-          <Text style={{color: "white", fontSize: 8}}>O que você achou desse vinho? Sua avaliação é importante para nós!</Text>
-          <View style={styles.avaliarBtn}>
-            <Text style={{fontSize: 12}}>Quero avaliar :)</Text>
-          </View>
-        </View>
+        </Modal>
+
         <View style={styles.commentSection}>
-          <Text style={{color: "#E1D5C2", alignSelf: "flex-start"}}>Avaliações e comentários</Text>
-          <Comment />
-          <Comment />
-          <Comment />
+          <Text style={{ color: "#E1D5C2", alignSelf: "flex-start" }}>
+            Avaliações e comentários
+          </Text>
+          {comentarios.length === 0 && (
+            <Text style={{ color: "white", marginTop: 10 }}>
+              Nenhum comentário ainda.
+            </Text>
+          )}
+          {comentarios.map((c) => {
+            const usuario = usuarios.find((u) => u.cpf === c.usuarioCpf);
+            return (
+              <Comment
+                key={c.idAvaliacao}
+                comentario={c}
+                nomeUsuario={
+                  usuario ? usuario.nome : `Usuário: ${c.usuarioCpf}`
+                }
+              />
+            );
+          })}
         </View>
         <View style={styles.moreComments}>
           <Text>Mostrar mais</Text>
         </View>
-        <Text style={{color: "#E1D5C2", fontSize: 20, alignSelf: "flex-start", marginLeft: 35}}>Conheça tambem</Text>
-        <Galeria />
         <StatusBar style="auto" />
       </ScrollView>
       <Footer />
@@ -184,13 +404,48 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 0,
+  },
+  infoBox: {
+    width: "100%",
+    backgroundColor: "#F8F2ED",
+    borderRadius: 8,
+    borderTopLeftRadius: 0, // borda superior reta
+    borderTopRightRadius: 0, // borda superior reta
+    padding: 20,
+    marginTop: 0,
+    marginBottom: 15,
+    alignSelf: "center",
+    elevation: 3,
+  },
+  infoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderColor: "#3B2C1A",
+    paddingBottom: 8,
+    marginBottom: 10,
+  },
+  infoTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#3B2C1A",
+    flex: 1,
+    textAlign: "center",
+  },
+  infoText: {
+    color: "#3B2C1A",
+    fontSize: 15,
+    lineHeight: 22,
   },
   avaliarBody: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 30,
-    gap: 10
+    gap: 10,
   },
   avaliarBtn: {
     backgroundColor: "white",
@@ -214,6 +469,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    marginBottom: 100
-  }
+    marginBottom: 100,
+  },
 });

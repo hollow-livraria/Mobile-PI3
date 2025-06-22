@@ -5,16 +5,31 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Galeria from "../components/Galeria";
 import Footer from "../components/Footer";
-
-
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const [produtos, setProdutos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://localhost:8000/produtos/")
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao buscar produtos");
+        return response.json();
+      })
+      .then((data) => {
+        if (data.produtos) setProdutos(data.produtos);
+      })
+      .catch((error) => console.error("Erro:", error))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header />
       <Banner />
       <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
-      <Galeria />
+      <Galeria produtos={produtos} loading={isLoading} />
       <Footer />
       <StatusBar style="auto" />
     </View>

@@ -31,26 +31,21 @@ export default function PerfilEdit() {
     const fetchUser = async () => {
       try {
         const userStr = await AsyncStorage.getItem("user");
-        const cadastrosStr = await AsyncStorage.getItem("cadastros");
-        if (userStr && cadastrosStr) {
+        if (userStr) {
           const user = JSON.parse(userStr);
           setUserEmail(user.email);
-          const cadastros = JSON.parse(cadastrosStr);
-          const cadastro = cadastros.find((c) => c.email === user.email);
-          if (cadastro) {
-            setForm({
-              nome: cadastro.nome || "",
-              email: cadastro.email || "",
-              cpf: cadastro.cpf || "",
-              sexo: cadastro.sexo || "",
-              telefone: cadastro.telefone || "",
-              nascimento: cadastro.nascimento || "",
-              avatar: cadastro.avatar || "",
-            });
-          }
+          setForm({
+            nome: user.nome || "",
+            email: user.email || "",
+            cpf: user.cpf || "",
+            sexo: user.sexo || "",
+            telefone: user.telefone || "",
+            nascimento: user.nascimento || "",
+            avatar: user.avatar || "",
+          });
         }
       } catch (err) {
-        console.error("Erro ao buscar usuário/cadastro:", err);
+        console.error("Erro ao buscar usuário:", err);
       } finally {
         setLoading(false);
       }
@@ -62,20 +57,7 @@ export default function PerfilEdit() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const emailDuplicadoNoBackend = async (email, meuEmail = null) => {
-    try {
-      const res = await fetch("https://localhost:8000/auth/signup"); // ajuste o endpoint conforme seu backend
-      if (!res.ok) return false;
-      const users = await res.json();
-      // Só impede se o email já existe em outro usuário (não o próprio)
-      return users.some((u) => u.email === email && u.email !== meuEmail);
-    } catch (e) {
-      return false; // Em caso de erro, não bloqueia (mas pode ajustar para bloquear se preferir)
-    }
-  };
-
-  const validateForm = async () => {
-    // Campos obrigatórios
+  const validateForm = () => {
     if (
       !form.nome ||
       !form.email ||
@@ -87,41 +69,19 @@ export default function PerfilEdit() {
       setError("Preencha todos os campos obrigatórios");
       return false;
     }
-    // Email válido
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       setError("E-mail inválido");
       return false;
     }
-    // Email único (exceto o próprio)
-    const cadastrosStr = await AsyncStorage.getItem("cadastros");
-    if (cadastrosStr) {
-      const cadastros = JSON.parse(cadastrosStr);
-      const emailJaExiste = cadastros.some(
-        (c) => c.email === form.email && c.email !== userEmail
-      );
-      if (emailJaExiste) {
-        setError("Já existe um cadastro com esse e-mail");
-        return false;
-      }
-    }
-    const emailJaExiste = await emailDuplicadoNoBackend(form.email, userEmail);
-    if (emailJaExiste) {
-      setError('Já existe um cadastro com esse e-mail');
-      setLoading(false);
-      return;
-    }
-    // CPF deve ter 11 dígitos numéricos
     if (form.cpf.replace(/\D/g, "").length !== 11) {
       setError("CPF inválido");
       return false;
     }
-    // Telefone deve ter pelo menos 10 dígitos
     if (form.telefone.replace(/\D/g, "").length < 10) {
       setError("Telefone inválido");
       return false;
     }
-    // Nascimento deve ter 8 dígitos (DDMMAAAA)
     if (form.nascimento.replace(/\D/g, "").length !== 8) {
       setError("Data de nascimento inválida");
       return false;
@@ -132,7 +92,7 @@ export default function PerfilEdit() {
 
   const handleSave = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const userStr = await AsyncStorage.getItem("user");
       if (!userStr) {
@@ -144,15 +104,14 @@ export default function PerfilEdit() {
 
       const formParaEnviar = {
         ...form,
-        cpf: form.cpf.replace(/\D/g, '').slice(0, 11), // só números, máximo 11 dígitos
-        password: form.password || '', // garanta que password está presente
+        cpf: form.cpf.replace(/\D/g, "").slice(0, 11),
+        password: form.password || undefined,
       };
 
-      // Envie para o backend (ajuste o endpoint conforme seu backend)
       const response = await fetch(`https://localhost:8000/users/${user.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formParaEnviar)
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formParaEnviar),
       });
 
       const data = await response.json();
@@ -162,8 +121,20 @@ export default function PerfilEdit() {
         return;
       }
 
-      // Atualize o AsyncStorage local com o retorno do backend
-      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      // Salve exatamente o objeto retornado
+      await AsyncStorage.setItem("user", JSON.stringify(data));
+
+      // Atualize o form local
+      setForm({
+        nome: data.nome,
+        email: data.email,
+        cpf: data.cpf,
+        sexo: data.sexo,
+        telefone: data.telefone,
+        nascimento: data.nascimento,
+        avatar: data.avatar,
+      });
+
       Alert.alert("Sucesso", "Dados atualizados com sucesso!");
       router.replace("/perfil");
     } catch (err) {
@@ -209,7 +180,7 @@ export default function PerfilEdit() {
           style={styles.input}
           placeholder="Senha"
           value={form.password}
-          onChangeText={v => handleChange("password", v)}
+          onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
         />
       </View>
@@ -267,7 +238,9 @@ export default function PerfilEdit() {
       <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
         <Text style={styles.saveText}>Salvar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.cancelBtn} onPress={() => router.back()}>
+      <TouchableOpacity
+        style={styles.cancelBtn}
+        onPress={() => router.replace("/perfil")}>
         <Text style={styles.cancelText}>Cancelar</Text>
       </TouchableOpacity>
     </ScrollView>

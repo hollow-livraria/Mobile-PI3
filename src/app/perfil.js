@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
@@ -30,6 +36,7 @@ export default function perfil() {
           const cadastro = cadastros.find((c) => c.email === user.email);
           if (cadastro) {
             setUser(cadastro);
+            console.log("Usuário logado:", cadastro); // Adicione esta linha
           }
         }
       } catch (err) {
@@ -69,12 +76,21 @@ export default function perfil() {
           />
           <View style={{ marginTop: 20 }}>
             <Text style={styles.nomePerfil}>{user.nome}</Text>
-            <Pressable
-              style={styles.editBtn}
-              onPress={() => router.push("/perfilEdit")}
-            >
-              <Text style={styles.editText}>Editar perfil</Text>
-            </Pressable>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Pressable
+                style={styles.editBtn}
+                onPress={() => router.push("/perfilEdit")}>
+                <Text style={styles.editText}>Editar perfil</Text>
+              </Pressable>
+              <Pressable
+                style={styles.editBtn}
+                onPress={async () => {
+                  await AsyncStorage.removeItem("user");
+                  router.replace("/login");
+                }}>
+                <Text style={styles.editText}>Logout</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
         <View
@@ -82,8 +98,7 @@ export default function perfil() {
             flexDirection: "row",
             alignItems: "center",
             marginRight: 20,
-          }}
-        >
+          }}>
           <Pressable onPress={() => router.push("/favoritos")}>
             <Octicons
               name="heart"
@@ -104,8 +119,7 @@ export default function perfil() {
             fontSize: 15,
             marginTop: 10,
             marginLeft: 10,
-          }}
-        >
+          }}>
           Meus Pedidos
         </Text>
         <Text
@@ -114,8 +128,7 @@ export default function perfil() {
             marginBottom: 15,
             marginLeft: 10,
             fontSize: 10,
-          }}
-        >
+          }}>
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
@@ -152,8 +165,7 @@ export default function perfil() {
           marginTop: 50,
           marginRight: 50,
           alignSelf: "center",
-        }}
-      >
+        }}>
         A escolha certa para o seu paladar!
       </Text>
       <View
@@ -162,8 +174,7 @@ export default function perfil() {
           flex: 1,
           paddingBottom: 20,
           alignItems: "center",
-        }}
-      >
+        }}>
         <Galeria />
       </View>
       <Footer />
@@ -204,6 +215,8 @@ const styles = StyleSheet.create({
     height: 30,
     marginLeft: 20,
     marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   editText: {
     color: "white",
