@@ -3,74 +3,64 @@
 //                            |、˜〵
 //                           じしˍ,)ノ
 
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 
-export default function CardCart() {
+export default function OrderConfirmationCard({ produto }) {
   return (
-    <View style={styles.cardBody}>
-      <View style={styles.fullCard}>
-        <Image
-          source={require("../../assets/imgs/vinho_teste.png")}
-          style={{
-            width: 80,
-            height: 80,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 5,
-          }}
-        />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "flex-start",
-            marginLeft: 10,
-            gap: 10,
-          }}
-        >
-          <Text style={{ color: "#E1D5C2", fontSize: 15 }}>
-            Sacramento Sangrento
-          </Text>
-          <Text style={{ color: "white", fontSize: 20 }}>R$ 5.000</Text>
-          <Text style={{ color: "white", fontSize: 12 }}>Quantidade: 01</Text>
-        </View>
+    <View style={styles.card}>
+      <Image
+        source={{
+          uri:
+            produto.imagem ||
+            produto.fotoVinho ||
+            "https://i.imgur.com/default-avatar.png",
+        }}
+        style={styles.image}
+      />
+      <View style={styles.info}>
+        <Text style={styles.nome}>{produto.nome}</Text>
+        <Text style={styles.quantidade}>Quantidade: {produto.quantidade || 1}</Text>
+        <Text style={styles.preco}>R$ {produto.preco}</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  cardBody: {
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#222",
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 10,
     width: "100%",
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 5,
+    marginRight: 12,
+    backgroundColor: "#444",
+  },
+  info: {
+    flex: 1,
     flexDirection: "column",
-    paddingTop: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  fullCard: {
-    width: "100%",
-    flexDirection: "row",
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
-  },
-  quantitySelector: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    marginTop: 20,
-    marginRight: 20,
-  },
-  quantitySelectorBtn: {
-    flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
-    gap: 5,
-    paddingLeft: 3,
-    borderWidth: 1,
-    borderColor: "white",
-    width: 45,
-    height: 25,
-    borderRadius: 5,
+  },
+  nome: {
+    color: "#E1D5C2",
+    fontSize: 16,
+    marginBottom: 2,
+  },
+  quantidade: {
+    color: "white",
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  preco: {
+    color: "white",
+    fontSize: 14,
   },
 });

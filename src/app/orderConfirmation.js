@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
 import Footer from "../components/Footer";
 import OrderConfirmationCard from "../components/orderConfirmationCard";
@@ -7,6 +8,13 @@ import OrderConfirmationCard from "../components/orderConfirmationCard";
 import Octicons from "@expo/vector-icons/Octicons";
 
 export default function orderConfirmation() {
+  const params = useLocalSearchParams();
+  const produtos = params.produtos ? JSON.parse(params.produtos) : [];
+  const total = Number(params.total) || 0;
+  const frete = Number((total * 0.05).toFixed(2));
+  const desconto = 0; // ajuste se quiser aplicar cupom
+  const totalFinal = total + frete - desconto;
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -36,15 +44,17 @@ export default function orderConfirmation() {
             <Text style={{ color: "#E1D5C2", fontSize: 20, marginBottom: 10 }}>
               Itens
             </Text>
-            <Text style={{ color: "white", marginBottom: 10 }}>3 items</Text>
+            <Text style={{ color: "white", marginBottom: 10 }}>
+              {produtos.length} items
+            </Text>
           </View>
-          <ScrollView style={{maxHeight: 300}} contentContainerStyle={{width: 390}}>
-            <OrderConfirmationCard />
-            <OrderConfirmationCard />
-            <OrderConfirmationCard />
-            <OrderConfirmationCard />
-            <OrderConfirmationCard />
-            <OrderConfirmationCard />
+          <ScrollView
+            style={{ maxHeight: 300 }}
+            contentContainerStyle={{ width: 390 }}
+          >
+            {produtos.map((produto, idx) => (
+              <OrderConfirmationCard key={idx} produto={produto} />
+            ))}
           </ScrollView>
           <Text
             style={{
@@ -58,29 +68,72 @@ export default function orderConfirmation() {
             Cupom
           </Text>
           <View style={styles.cupomBody}>
-            <Text style={{ color: "grey", flex: 1, textAlign: "left", paddingLeft: 15 }}>
+            <Text
+              style={{
+                color: "grey",
+                flex: 1,
+                textAlign: "left",
+                paddingLeft: 15,
+              }}
+            >
               CHIKAMSO-20-OFF
             </Text>
-            <Text style={{ flex: 1, textAlign: "right", borderLeftWidth: 1, borderLeftColor: "grey", paddingRight: 15 }}>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: "right",
+                borderLeftWidth: 1,
+                borderLeftColor: "grey",
+                paddingRight: 15,
+              }}
+            >
               Aplicar
             </Text>
           </View>
           <View style={styles.prices}>
-            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <Text style={{color: "white", fontSize: 20}}>Subtotal</Text>
-              <Text style={{color: "white", fontSize: 20}}>R$ 1.000</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>Subtotal</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                R$ {total.toFixed(2)}
+              </Text>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <Text style={{color: "white", fontSize: 20}}>Frete</Text>
-              <Text style={{color: "white", fontSize: 20}}>R$ 0.00</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>Frete</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                R$ {frete.toFixed(2)}
+              </Text>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <Text style={{color: "white", fontSize: 20}}>Desconto</Text>
-              <Text style={{color: "white", fontSize: 20}}>-R$ 100.0</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>Desconto</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                -R$ {desconto.toFixed(2)}
+              </Text>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <Text style={{color: "white", fontSize: 20}}>Total</Text>
-              <Text style={{color: "white", fontSize: 20}}>R$ 900.0</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>Total</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                R$ {totalFinal.toFixed(2)}
+              </Text>
             </View>
           </View>
           <View style={styles.finalizar}>
@@ -102,7 +155,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     alignItems: "center",
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   envioBody: {
     width: "100%",

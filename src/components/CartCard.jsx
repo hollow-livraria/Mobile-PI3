@@ -5,15 +5,58 @@
 
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
-
 import Octicons from "react-native-vector-icons/Octicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
-export default function CardCart() {
+export default function CartCard({ produto, onUpdate }) {
+  // Função para atualizar quantidade
+  const updateQuantidade = async (delta) => {
+    const userStr = await AsyncStorage.getItem("user");
+    if (!userStr) return;
+    const userObj = JSON.parse(userStr);
+    const cpf = userObj.cpf || userObj.user?.cpf;
+    const cartKey = `cart:${cpf}`;
+    let cart = [];
+    const cartStr = await AsyncStorage.getItem(cartKey);
+    if (cartStr) cart = JSON.parse(cartStr);
+    const idx = cart.findIndex(
+      (p) => String(p.idProduto || p.id) === String(produto.idProduto || produto.id)
+    );
+    if (idx !== -1) {
+      cart[idx].quantidade = Math.max(1, (cart[idx].quantidade || 1) + delta);
+      await AsyncStorage.setItem(cartKey, JSON.stringify(cart));
+      onUpdate && onUpdate();
+    }
+  };
+
+  // Função para remover produto
+  const removerProduto = async () => {
+    const userStr = await AsyncStorage.getItem("user");
+    if (!userStr) return;
+    const userObj = JSON.parse(userStr);
+    const cpf = userObj.cpf || userObj.user?.cpf;
+    const cartKey = `cart:${cpf}`;
+    let cart = [];
+    const cartStr = await AsyncStorage.getItem(cartKey);
+    if (cartStr) cart = JSON.parse(cartStr);
+    const novoCart = cart.filter(
+      (p) => String(p.idProduto || p.id) !== String(produto.idProduto || produto.id)
+    );
+    await AsyncStorage.setItem(cartKey, JSON.stringify(novoCart));
+    onUpdate && onUpdate();
+  };
+
   return (
     <View style={styles.cardBody}>
       <View style={styles.fullCard}>
         <Image
-          source={require("../../assets/imgs/vinho_teste.png")}
+          source={{
+            uri:
+              produto.imagem ||
+              produto.fotoVinho ||
+              "https://i.imgur.com/default-avatar.png",
+          }}
           style={{
             width: 80,
             height: 80,
@@ -30,13 +73,17 @@ export default function CardCart() {
           }}
         >
           <Text style={{ color: "#E1D5C2", fontSize: 20 }}>
-            Sacramento Sangrento
+            {produto.nome}
           </Text>
-          <Text style={{ color: "white", fontSize: 15 }}>Vinho Tinto</Text>
-          <Text style={{ color: "white", fontSize: 20 }}>R$ 5.000</Text>
+          <Text style={{ color: "white", fontSize: 15 }}>
+            {produto.categoria || "Vinho"}
+          </Text>
+          <Text style={{ color: "white", fontSize: 20 }}>
+            R$ {produto.preco}
+          </Text>
         </View>
         <View style={{ marginLeft: 10, alignItems: "flex-end" }}>
-          <Pressable onPress={() => alert("Remover do carrinho")}>
+          <Pressable onPress={removerProduto}>
             <Octicons
               style={{ marginTop: 10 }}
               name="trash"
@@ -46,11 +93,13 @@ export default function CardCart() {
           </Pressable>
           <View style={styles.quantitySelector}>
             <View style={styles.quantitySelectorBtn}>
-              <Pressable onPress={() => alert("Decrementar quantidade")}>
+              <Pressable onPress={() => updateQuantidade(-1)}>
                 <Text style={{ color: "white" }}>-</Text>
               </Pressable>
-              <Text style={{ color: "white" }}>01</Text>
-              <Pressable onPress={() => alert("Incrementar quantidade")}>
+              <Text style={{ color: "white" }}>
+                {produto.quantidade || 1}
+              </Text>
+              <Pressable onPress={() => updateQuantidade(1)}>
                 <Text style={{ color: "white" }}>+</Text>
               </Pressable>
             </View>

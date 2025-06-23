@@ -208,6 +208,47 @@ export default function productDetails() {
             />
           </Pressable>
         </View>
+
+        {/* Botão adicionar ao carrinho */}
+        <TouchableOpacity
+          style={{
+            marginTop: 20,
+            backgroundColor: "#E1D5C2",
+            borderRadius: 8,
+            paddingVertical: 12,
+            paddingHorizontal: 30,
+            alignSelf: "center",
+          }}
+          onPress={async () => {
+            if (!user || !produto) return;
+            const cpf = user.cpf || user.user?.cpf;
+            const cartKey = `cart:${cpf}`;
+            let cart = [];
+            try {
+              const cartStr = await AsyncStorage.getItem(cartKey);
+              if (cartStr) cart = JSON.parse(cartStr);
+            } catch {}
+            // Verifica se já existe
+            const idx = cart.findIndex(
+              (p) =>
+                String(p.idProduto || p.id) ===
+                String(produto.idProduto || produto.id)
+            );
+            if (idx !== -1) {
+              // Já existe, soma quantidade
+              cart[idx].quantidade = (cart[idx].quantidade || 1) + quantity;
+            } else {
+              // Novo produto
+              cart.push({ ...produto, quantidade: quantity });
+            }
+            await AsyncStorage.setItem(cartKey, JSON.stringify(cart));
+            Alert.alert("Carrinho", "Produto adicionado ao carrinho!");
+          }}>
+          <Text style={{ color: "#3B2C1A", fontWeight: "bold", fontSize: 16 }}>
+            Adicionar ao carrinho
+          </Text>
+        </TouchableOpacity>
+
         <View style={styles.informationBody}>
           <View style={styles.informationText}>
             <Text style={{ color: "#E1D5C2", fontSize: 20 }}>
