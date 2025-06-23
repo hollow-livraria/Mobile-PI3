@@ -1,6 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  TextInput,
+} from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 
 import Footer from "../components/Footer";
 import OrderConfirmationCard from "../components/orderConfirmationCard";
@@ -11,15 +19,22 @@ import { useRouter } from "expo-router";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const BACKEND_URL = "https://localhost:8000/cupom"; // ou https://10.0.2.2:8000/cupom
+
 export default function orderConfirmation() {
   const params = useLocalSearchParams();
   const produtos = params.produtos ? JSON.parse(params.produtos) : [];
   const total = Number(params.total) || 0;
   const frete = Number((total * 0.05).toFixed(2));
-  const desconto = 0; // ajuste se quiser aplicar cupom
-  const totalFinal = total + frete - desconto;
 
   const router = useRouter();
+
+  const [cupom, setCupom] = useState("");
+  const [desconto, setDesconto] = useState(0);
+  const [cupomInfo, setCupomInfo] = useState(null);
+  const [cupomErro, setCupomErro] = useState(null);
+
+  const totalFinal = total + frete - desconto;
 
   const salvarHistorico = async () => {
     const userStr = await AsyncStorage.getItem("user");
@@ -28,7 +43,7 @@ export default function orderConfirmation() {
 
     // Buscar endereços do usuário pelo CPF
     const res = await fetch(
-      `https://192.168.0.10:8000/enderecos?usuarioCpf=${cpf}`
+      `https://localhost:8000/enderecos?usuarioCpf=${cpf}`
     );
     const data = await res.json();
     // Pegue o primeiro endereço (ou defina uma lógica para endereço principal)
@@ -97,26 +112,82 @@ export default function orderConfirmation() {
             Cupom
           </Text>
           <View style={styles.cupomBody}>
-            <Text
+            <TextInput
               style={{
-                color: "grey",
+                color: "black",
                 flex: 1,
-                textAlign: "left",
                 paddingLeft: 15,
-              }}>
-              CHIKAMSO-20-OFF
-            </Text>
-            <Text
+                backgroundColor: "white",
+                borderRadius: 15,
+                height: 40,
+              }}
+              placeholder="Digite seu cupom"
+              value={cupom}
+              onChangeText={setCupom}
+              autoCapitalize="characters"
+            />
+            <Pressable
               style={{
                 flex: 1,
-                textAlign: "right",
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center",
                 borderLeftWidth: 1,
                 borderLeftColor: "grey",
-                paddingRight: 15,
+                backgroundColor: "white",
+                borderTopRightRadius: 15,
+                borderBottomRightRadius: 15,
+              }}
+              disabled={!cupom.trim()}
+              onPress={async () => {
+                setCupomErro("");
+                setDesconto(0);
+                setCupomInfo(null);
+                if (!cupom.trim()) return;
+                try {
+                  const res = await fetch(BACKEND_URL);
+                  if (!res.ok) throw new Error("Falha ao validar cupom");
+                  const data = await res.json();
+                  // O backend retorna { cupons: [...] }
+                  const validCoupon = Array.isArray(data.cupons)
+                    ? data.cupons.find(
+                        (c) =>
+                          c.codigo?.toLowerCase() === cupom.trim().toLowerCase()
+                      )
+                    : null;
+                  if (validCoupon) {
+                    setCupomInfo(validCoupon);
+                    const descontoValor =
+                      total * ((validCoupon.desconto || 0) / 100);
+                    setDesconto(descontoValor); // ou validCoupon.percentual, conforme backend
+                  } else {
+                    setDesconto(0);
+                    setCupomErro("Cupom inválido");
+                  }
+                } catch (err) {
+                  setCupomErro("Erro ao validar cupom");
+                }
               }}>
-              Aplicar
-            </Text>
+              <Text
+                style={{
+                  color: "#3B2C1A",
+                  fontWeight: "bold",
+                  opacity: !cupom.trim() ? 0.5 : 1,
+                }}>
+                Aplicar
+              </Text>
+            </Pressable>
           </View>
+          {cupomErro ? (
+            <Text style={{ color: "red", marginLeft: 20, marginTop: 5 }}>
+              {cupomErro}
+            </Text>
+          ) : null}
+          {desconto > 0 && (
+            <Text style={{ color: "#E1D5C2", marginLeft: 20, marginTop: 5 }}>
+              Cupom aplicado: {cupomInfo?.codigo} (-{desconto}%)
+            </Text>
+          )}
           <View style={styles.prices}>
             <View
               style={{

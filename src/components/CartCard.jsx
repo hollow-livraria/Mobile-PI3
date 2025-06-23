@@ -7,7 +7,6 @@ import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
 import Octicons from "react-native-vector-icons/Octicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
 
 export default function CartCard({ produto, onUpdate }) {
   // Função para atualizar quantidade
@@ -49,61 +48,43 @@ export default function CartCard({ produto, onUpdate }) {
 
   return (
     <View style={styles.cardBody}>
-      <View style={styles.fullCard}>
-        <Image
-          source={{
-            uri:
-              produto.imagem ||
-              produto.fotoVinho ||
-              "https://i.imgur.com/default-avatar.png",
-          }}
-          style={{
-            width: 80,
-            height: 80,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 5,
-          }}
-        />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "flex-start",
-            marginLeft: 10,
-          }}
+      <Image
+        source={{
+          uri:
+            produto.imagem ||
+            produto.fotoVinho ||
+            "https://i.imgur.com/default-avatar.png",
+        }}
+        style={styles.image}
+      />
+      <View style={styles.infoArea}>
+        <Text
+          style={styles.nome}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
-          <Text style={{ color: "#E1D5C2", fontSize: 20 }}>
-            {produto.nome}
-          </Text>
-          <Text style={{ color: "white", fontSize: 15 }}>
-            {produto.categoria || "Vinho"}
-          </Text>
-          <Text style={{ color: "white", fontSize: 20 }}>
-            R$ {produto.preco}
-          </Text>
-        </View>
-        <View style={{ marginLeft: 10, alignItems: "flex-end" }}>
-          <Pressable onPress={removerProduto}>
-            <Octicons
-              style={{ marginTop: 10 }}
-              name="trash"
-              size={18}
-              color="white"
-            />
+          {produto.nome}
+        </Text>
+        <Text style={styles.categoria}>{produto.categoria || "Vinho"}</Text>
+        <Text style={styles.preco}>R$ {produto.preco}</Text>
+      </View>
+      <View style={styles.rightArea}>
+        <Pressable onPress={removerProduto}>
+          <Octicons
+            style={{ marginBottom: 10 }}
+            name="trash"
+            size={18}
+            color="white"
+          />
+        </Pressable>
+        <View style={styles.quantitySelector}>
+          <Pressable onPress={() => updateQuantidade(-1)}>
+            <Text style={styles.qtdBtn}>-</Text>
           </Pressable>
-          <View style={styles.quantitySelector}>
-            <View style={styles.quantitySelectorBtn}>
-              <Pressable onPress={() => updateQuantidade(-1)}>
-                <Text style={{ color: "white" }}>-</Text>
-              </Pressable>
-              <Text style={{ color: "white" }}>
-                {produto.quantidade || 1}
-              </Text>
-              <Pressable onPress={() => updateQuantidade(1)}>
-                <Text style={{ color: "white" }}>+</Text>
-              </Pressable>
-            </View>
-          </View>
+          <Text style={styles.qtdText}>{produto.quantidade || 1}</Text>
+          <Pressable onPress={() => updateQuantidade(1)}>
+            <Text style={styles.qtdBtn}>+</Text>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -112,36 +93,69 @@ export default function CartCard({ produto, onUpdate }) {
 
 const styles = StyleSheet.create({
   cardBody: {
-    width: "100%",
-    flexDirection: "column",
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  fullCard: {
-    width: "100%",
     flexDirection: "row",
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
+    alignItems: "center",
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 10,
+    width: "100%",
+    minHeight: 80,
+    position: "relative",
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 5,
+    marginRight: 12,
+    backgroundColor: "#444",
+  },
+  infoArea: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    maxWidth: "70%",
+    minWidth: 0, // importante para truncar corretamente
+  },
+  nome: {
+    color: "#E1D5C2",
+    fontSize: 16,
+    marginBottom: 2,
+    maxWidth: "100%",
+  },
+  categoria: {
+    color: "white",
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  preco: {
+    color: "white",
+    fontSize: 14,
+  },
+  rightArea: {
+    width: 60,
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    height: 60,
+    marginLeft: 8,
   },
   quantitySelector: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    marginTop: 20,
-    marginRight: 20,
-  },
-  quantitySelectorBtn: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 5,
-    paddingLeft: 3,
-    borderWidth: 1,
-    borderColor: "white",
-    width: 45,
-    height: 25,
+    backgroundColor: "#333",
     borderRadius: 5,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  qtdBtn: {
+    color: "white",
+    fontSize: 18,
+    paddingHorizontal: 8,
+  },
+  qtdText: {
+    color: "white",
+    fontSize: 16,
+    marginHorizontal: 4,
+    minWidth: 18,
+    textAlign: "center",
   },
 });

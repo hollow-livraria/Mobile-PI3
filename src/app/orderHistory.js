@@ -150,12 +150,13 @@ export default function orderHistory() {
                     </View>
                   </View>
                 ))}
-                <Text style={styles.endereco}>
+                {/* Removido temporariamente o texto sobre endereço */}
+                {/* <Text style={styles.endereco}>
                   Entregar em:{" "}
                   {pedido.endereco
                     ? `${pedido.endereco.rua}, ${pedido.endereco.numero} - ${pedido.endereco.bairro}, ${pedido.endereco.cidade} - ${pedido.endereco.estado}, ${pedido.endereco.cep}`
                     : "Endereço não cadastrado"}
-                </Text>
+                </Text> */}
               </View>
             ))
         )}
