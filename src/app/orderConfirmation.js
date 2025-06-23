@@ -19,7 +19,7 @@ import { useRouter } from "expo-router";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BACKEND_URL = "https://localhost:8000/cupom"; // ou https://10.0.2.2:8000/cupom
+const BACKEND_URL = "https://localhost:8000/cupom";
 
 export default function orderConfirmation() {
   const params = useLocalSearchParams();

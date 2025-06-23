@@ -11,7 +11,7 @@ import {
   Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Header from "../components/Header";
@@ -23,6 +23,7 @@ import { Image } from "expo-image";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function productDetails() {
+  const router = useRouter();
   const { id } = useLocalSearchParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -181,6 +182,21 @@ export default function productDetails() {
     <View style={{ flex: 1, backgroundColor: "#000002" }}>
       <ScrollView contentContainerStyle={styles.container}>
         <Header />
+        {/* Botão Voltar */}
+        <Pressable
+          onPress={() => router.back()}
+          style={{
+            position: "absolute",
+            top: 40,
+            left: 20,
+            zIndex: 10,
+            backgroundColor: "#E1D5C2",
+            borderRadius: 20,
+            padding: 8,
+            elevation: 4,
+          }}>
+          <MaterialIcons name="arrow-back" size={28} color="#3B2C1A" />
+        </Pressable>
         <View style={styles.imageHolder}>
           <Image
             source={{
@@ -209,45 +225,67 @@ export default function productDetails() {
           </Pressable>
         </View>
 
-        {/* Botão adicionar ao carrinho */}
-        <TouchableOpacity
+        <View
           style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
             marginTop: 20,
-            backgroundColor: "#E1D5C2",
-            borderRadius: 8,
-            paddingVertical: 12,
-            paddingHorizontal: 30,
-            alignSelf: "center",
-          }}
-          onPress={async () => {
-            if (!user || !produto) return;
-            const cpf = user.cpf || user.user?.cpf;
-            const cartKey = `cart:${cpf}`;
-            let cart = [];
-            try {
-              const cartStr = await AsyncStorage.getItem(cartKey);
-              if (cartStr) cart = JSON.parse(cartStr);
-            } catch {}
-            // Verifica se já existe
-            const idx = cart.findIndex(
-              (p) =>
-                String(p.idProduto || p.id) ===
-                String(produto.idProduto || produto.id)
-            );
-            if (idx !== -1) {
-              // Já existe, soma quantidade
-              cart[idx].quantidade = (cart[idx].quantidade || 1) + quantity;
-            } else {
-              // Novo produto
-              cart.push({ ...produto, quantidade: quantity });
-            }
-            await AsyncStorage.setItem(cartKey, JSON.stringify(cart));
-            Alert.alert("Carrinho", "Produto adicionado ao carrinho!");
+            gap: 16,
           }}>
-          <Text style={{ color: "#3B2C1A", fontWeight: "bold", fontSize: 16 }}>
-            Adicionar ao carrinho
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#E1D5C2",
+              borderRadius: 8,
+              paddingVertical: 12,
+              paddingHorizontal: 30,
+              alignSelf: "center",
+            }}
+            onPress={() => router.back()}>
+            <Text
+              style={{ color: "#3B2C1A", fontWeight: "bold", fontSize: 16 }}>
+              Voltar
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#E1D5C2",
+              borderRadius: 8,
+              paddingVertical: 12,
+              paddingHorizontal: 30,
+              alignSelf: "center",
+            }}
+            onPress={async () => {
+              if (!user || !produto) return;
+              const cpf = user.cpf || user.user?.cpf;
+              const cartKey = `cart:${cpf}`;
+              let cart = [];
+              try {
+                const cartStr = await AsyncStorage.getItem(cartKey);
+                if (cartStr) cart = JSON.parse(cartStr);
+              } catch {}
+              // Verifica se já existe
+              const idx = cart.findIndex(
+                (p) =>
+                  String(p.idProduto || p.id) ===
+                  String(produto.idProduto || produto.id)
+              );
+              if (idx !== -1) {
+                // Já existe, soma quantidade
+                cart[idx].quantidade = (cart[idx].quantidade || 1) + quantity;
+              } else {
+                // Novo produto
+                cart.push({ ...produto, quantidade: quantity });
+              }
+              await AsyncStorage.setItem(cartKey, JSON.stringify(cart));
+              Alert.alert("Carrinho", "Produto adicionado ao carrinho!");
+            }}>
+            <Text
+              style={{ color: "#3B2C1A", fontWeight: "bold", fontSize: 16 }}>
+              Adicionar ao carrinho
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.informationBody}>
           <View style={styles.informationText}>

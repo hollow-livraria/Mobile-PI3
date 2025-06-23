@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import Header from "../components/Header";
@@ -15,9 +15,8 @@ export default function vitrine() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("mais-vendidos");
+  const [value, setValue] = useState(""); // Estado inicial sem filtro
   const [items, setItems] = useState([
-    { label: "Mais Vendidos", value: "mais-vendidos" },
     { label: "Menor Preço", value: "menor-preco" },
     { label: "Maior Preço", value: "maior-preco" },
     { label: "A-Z", value: "az" },
@@ -40,94 +39,124 @@ export default function vitrine() {
       .finally(() => setIsLoading(false));
   }, []);
 
+  // Ordenação baseada no dropdown
+  useEffect(() => {
+    let ordenados = [...produtos];
+    switch (value) {
+      case "menor-preco":
+        ordenados.sort((a, b) => parseFloat(a.preco) - parseFloat(b.preco));
+        break;
+      case "maior-preco":
+        ordenados.sort((a, b) => parseFloat(b.preco) - parseFloat(a.preco));
+        break;
+      case "az":
+        ordenados.sort((a, b) => (a.nome || "").localeCompare(b.nome || ""));
+        break;
+      case "za":
+        ordenados.sort((a, b) => (b.nome || "").localeCompare(a.nome || ""));
+        break;
+      default:
+        // Sem filtro: mostra todos os produtos na ordem original
+        break;
+    }
+    setProdutosFiltrados(ordenados);
+  }, [value, produtos]);
+
   return (
     <View style={styles.container}>
       <Header />
-      <View style={styles.filtro}>
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          style={{
-            backgroundColor: "#E1D5C2",
-            borderRadius: 10,
-            borderWidth: 0,
-            minHeight: 38,
-            width: 180,
-            paddingHorizontal: 12,
-            marginVertical: 8,
-            elevation: 4,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-          }}
-          dropDownContainerStyle={{
-            backgroundColor: "#E1D5C2",
-            borderRadius: 10,
-            borderWidth: 0,
-            width: 180,
-            elevation: 4,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-          }}
-          textStyle={{
-            color: "#222",
-            fontWeight: "bold",
-            fontSize: 15,
-            fontFamily: "Gilda Display",
-          }}
-          labelStyle={{
-            color: "#222",
-            fontWeight: "bold",
-            fontSize: 15,
-            fontFamily: "Gilda Display",
-          }}
-          selectedItemLabelStyle={{
-            color: "#8B5C2A",
-            fontWeight: "bold",
-          }}
-          listItemContainerStyle={{
-            borderRadius: 8,
-            marginVertical: 2,
-            height: 32,
-            minHeight: 32,
-            justifyContent: "center",
-          }}
-          listItemLabelStyle={{
-            fontSize: 15,
-            paddingVertical: 2,
-          }}
-          arrowIconStyle={{
-            tintColor: "#8B5C2A",
-            width: 24,
-            height: 24,
-          }}
-          placeholder="Ordenar por"
-          showArrowIcon={true}
-          showTickIcon={false}
-          dropDownDirection="AUTO"
-          zIndex={1000}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 12,
-          }}>
-          <Octicons name="filter" size={26} color="white" />
-          <Text style={styles.filtroText}>Filtro</Text>
+      <ScrollView
+        style={{ width: "100%" }}
+        contentContainerStyle={{
+          alignItems: "center",
+          paddingBottom: 100,
+        }}>
+        <View style={styles.filtro}>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            style={{
+              backgroundColor: "#E1D5C2",
+              borderRadius: 10,
+              borderWidth: 0,
+              minHeight: 38,
+              width: 180,
+              paddingHorizontal: 12,
+              marginVertical: 8,
+              elevation: 4,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: "#E1D5C2",
+              borderRadius: 10,
+              borderWidth: 0,
+              width: 180,
+              elevation: 4,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+            }}
+            textStyle={{
+              color: "#222",
+              fontWeight: "bold",
+              fontSize: 15,
+              fontFamily: "Gilda Display",
+            }}
+            labelStyle={{
+              color: "#222",
+              fontWeight: "bold",
+              fontSize: 15,
+              fontFamily: "Gilda Display",
+            }}
+            selectedItemLabelStyle={{
+              color: "#8B5C2A",
+              fontWeight: "bold",
+            }}
+            listItemContainerStyle={{
+              borderRadius: 8,
+              marginVertical: 2,
+              height: 32,
+              minHeight: 32,
+              justifyContent: "center",
+            }}
+            listItemLabelStyle={{
+              fontSize: 15,
+              paddingVertical: 2,
+            }}
+            arrowIconStyle={{
+              tintColor: "#8B5C2A",
+              width: 24,
+              height: 24,
+            }}
+            placeholder="Ordenar por"
+            showArrowIcon={true}
+            showTickIcon={false}
+            dropDownDirection="AUTO"
+            zIndex={1000}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginLeft: 12,
+            }}>
+            <Octicons name="filter" size={26} color="white" />
+            <Text style={styles.filtroText}>Filtro</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.galeriaWrapper}>
-        <Galeria produtos={produtosFiltrados} />
-      </View>
+        <View style={styles.galeriaWrapper}>
+          <Galeria produtos={produtosFiltrados} />
+        </View>
+      </ScrollView>
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -154,32 +183,8 @@ const styles = StyleSheet.create({
     color: "white",
     marginLeft: 8,
   },
-  dropdownWrapper: {
-    position: "relative",
-    backgroundColor: "#E1D5C2",
-    borderRadius: 8,
-    overflow: "hidden",
-    width: 200,
-    height: 40,
-    justifyContent: "center",
-    marginRight: 10,
-  },
-  picker: {
-    width: "100%",
-    height: 40,
-    color: "#000",
-    backgroundColor: "transparent",
-    paddingLeft: 10,
-  },
-  dropdownIcon: {
-    position: "absolute",
-    right: 10,
-    top: 6,
-    pointerEvents: "none",
-  },
   galeriaWrapper: {
-    flex: 1,
     width: "100%",
-    overflow: "hidden",
+    // Remova flex: 1 e overflow: "hidden"
   },
 });
