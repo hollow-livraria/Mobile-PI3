@@ -31,17 +31,19 @@ export default function PerfilEdit() {
     const fetchUser = async () => {
       try {
         const userStr = await AsyncStorage.getItem("user");
+        console.log("LIDO DO ASYNCSTORAGE:", userStr);
         if (userStr) {
-          const user = JSON.parse(userStr);
-          setUserEmail(user.email);
+          const userObj = JSON.parse(userStr);
+          const dados = userObj.user ? userObj.user : userObj;
+          setUserEmail(dados.email);
           setForm({
-            nome: user.nome || "",
-            email: user.email || "",
-            cpf: user.cpf || "",
-            sexo: user.sexo || "",
-            telefone: user.telefone || "",
-            nascimento: user.nascimento || "",
-            avatar: user.avatar || "",
+            nome: dados.nome || "",
+            email: dados.email || "",
+            cpf: dados.cpf || "",
+            sexo: dados.sexo || "",
+            telefone: dados.telefone || "",
+            nascimento: dados.nascimento || "",
+            avatar: dados.avatar || "",
           });
         }
       } catch (err) {
@@ -93,6 +95,10 @@ export default function PerfilEdit() {
   const handleSave = async () => {
     setLoading(true);
     setError("");
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
     try {
       const userStr = await AsyncStorage.getItem("user");
       if (!userStr) {
@@ -108,6 +114,8 @@ export default function PerfilEdit() {
         password: form.password || undefined,
       };
 
+      console.log("form:", form);
+
       const response = await fetch(`https://localhost:8000/users/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -115,24 +123,37 @@ export default function PerfilEdit() {
       });
 
       const data = await response.json();
+      console.log("data do backend:", data);
+
       if (!response.ok) {
         setError(data.message || "Erro ao atualizar perfil.");
         setLoading(false);
         return;
       }
 
-      // Salve exatamente o objeto retornado
-      await AsyncStorage.setItem("user", JSON.stringify(data));
+      // Antes de salvar no AsyncStorage e atualizar o form:
+      const userAtual = JSON.parse(await AsyncStorage.getItem("user"));
+
+      // Misture os dados antigos com os novos
+      const usuarioAtualizado = { ...userAtual, ...data };
+      Object.keys(userAtual).forEach((key) => {
+        if (data[key] === undefined || data[key] === "") {
+          usuarioAtualizado[key] = userAtual[key];
+        }
+      });
+      // Salve no AsyncStorage
+      await AsyncStorage.setItem("user", JSON.stringify(usuarioAtualizado));
 
       // Atualize o form local
       setForm({
-        nome: data.nome,
-        email: data.email,
-        cpf: data.cpf,
-        sexo: data.sexo,
-        telefone: data.telefone,
-        nascimento: data.nascimento,
-        avatar: data.avatar,
+        nome: usuarioAtualizado.nome || "",
+        email: usuarioAtualizado.email || "",
+        password: "", // Senha não deve ser atualizada aqui
+        cpf: usuarioAtualizado.cpf || "",
+        sexo: usuarioAtualizado.sexo || "",
+        telefone: usuarioAtualizado.telefone || "",
+        nascimento: usuarioAtualizado.nascimento || "",
+        avatar: usuarioAtualizado.avatar || "",
       });
 
       Alert.alert("Sucesso", "Dados atualizados com sucesso!");

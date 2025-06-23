@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Header from "../components/Header";
 import Galeria from "../components/Galeria";
@@ -32,6 +33,9 @@ export default function productDetails() {
   const [reviewText, setReviewText] = useState("");
   const [reviewNota, setReviewNota] = useState(0);
   const [usuarios, setUsuarios] = useState([]);
+  const [isFavorito, setIsFavorito] = useState(false);
+  const [idFavorito, setIdFavorito] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -77,6 +81,33 @@ export default function productDetails() {
       .catch((err) => console.error("Erro ao buscar usuários:", err));
   }, []);
 
+  useEffect(() => {
+    AsyncStorage.getItem("user").then((userStr) => {
+      if (userStr) setUser(JSON.parse(userStr));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!user || !produto) return;
+    fetch("https://localhost:8000/favoritos")
+      .then((res) => res.json())
+      .then((data) => {
+        const favoritos = data.favoritos || [];
+        const fav = favoritos.find(
+          (f) =>
+            String(f.idProduto) === String(produto.idProduto || produto.id) &&
+            (f.usuarioCpf === user.cpf || f.usuarioCpf === user.user?.cpf)
+        );
+        if (fav) {
+          setIsFavorito(true);
+          setIdFavorito(fav.idFavorito);
+        } else {
+          setIsFavorito(false);
+          setIdFavorito(null);
+        }
+      });
+  }, [user, produto]);
+
   const increment = () => setQuantity((q) => q + 1);
   const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
@@ -114,6 +145,34 @@ export default function productDetails() {
       );
   };
 
+  const handleFavoritar = async () => {
+    if (!user || !produto) return;
+    if (!isFavorito) {
+      // Adicionar favorito
+      await fetch("https://localhost:8000/favoritos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usuarioCpf: user.cpf || user.user?.cpf,
+          idProduto: produto.idProduto || produto.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setIsFavorito(true);
+          setIdFavorito(data.favorito?.idFavorito);
+        });
+    } else if (idFavorito) {
+      // Remover favorito
+      await fetch(`https://localhost:8000/favoritos/${idFavorito}`, {
+        method: "DELETE",
+      }).then(() => {
+        setIsFavorito(false);
+        setIdFavorito(null);
+      });
+    }
+  };
+
   if (loading) return <Text style={{ color: "white" }}>Carregando...</Text>;
   if (!produto)
     return <Text style={{ color: "white" }}>Produto não encontrado</Text>;
@@ -132,6 +191,22 @@ export default function productDetails() {
             }}
             style={{ width: 280, height: 280, borderRadius: 5 }}
           />
+          <Pressable
+            onPress={handleFavoritar}
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              backgroundColor: "#fff8",
+              borderRadius: 20,
+              padding: 5,
+            }}>
+            <MaterialIcons
+              name={isFavorito ? "favorite" : "favorite-border"}
+              size={32}
+              color={isFavorito ? "#E53935" : "#3B2C1A"}
+            />
+          </Pressable>
         </View>
         <View style={styles.informationBody}>
           <View style={styles.informationText}>

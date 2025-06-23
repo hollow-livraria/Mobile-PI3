@@ -1,48 +1,62 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { Image } from "expo-image";
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (name, value) => {
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const response = await fetch('https://localhost:8000/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("https://localhost:8000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: form.email,
-          password: form.password
-        })
+          password: form.password,
+        }),
       });
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || 'Erro ao fazer login');
+        setError(data.message || "Erro ao fazer login");
+        setLoading(false);
+        return;
       }
       const data = await response.json();
-      // Salva o token
-      if (data.token) {
-        await AsyncStorage.setItem('token', data.token);
-      }
-      // Salva apenas o email do usuário logado
-      if (data.user) {
-        await AsyncStorage.setItem('user', JSON.stringify(data.user));
-      }
-      Alert.alert('Login realizado!', 'Bem-vindo!');
-      router.push('/'); // Redireciona para a index
+
+      // Após login, busque o usuário completo
+      const userId = data.user?.id || data.id;
+      const userRes = await fetch(`https://localhost:8000/users/${userId}`);
+      const userFull = await userRes.json();
+
+      // Salve o usuário completo no AsyncStorage
+      await AsyncStorage.setItem(
+        "user",
+        JSON.stringify(userFull.user || userFull)
+      );
+
+      router.replace("/");
     } catch (err) {
-      setError(err.message);
+      setError("Erro ao fazer login");
     } finally {
       setLoading(false);
     }
@@ -50,14 +64,17 @@ export default function Login() {
 
   return (
     <ScrollView style={styles.container}>
-      <Image style={styles.logo} source={require('../../assets/imgs/logo-vivant-clara.png')} />
+      <Image
+        style={styles.logo}
+        source={require("../../assets/imgs/logo-vivant-clara.png")}
+      />
       <Text style={styles.h1}>Entrar na sua conta</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>E-mail</Text>
         <TextInput
           placeholder="exemplo@gmail.com"
           value={form.email}
-          onChangeText={v => handleChange('email', v)}
+          onChangeText={(v) => handleChange("email", v)}
           keyboardType="email-address"
           style={styles.input}
         />
@@ -67,18 +84,23 @@ export default function Login() {
         <TextInput
           placeholder="Digite sua senha..."
           value={form.password}
-          onChangeText={v => handleChange('password', v)}
+          onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
           style={styles.input}
+          onSubmitEditing={handleSubmit}
         />
       </View>
-      {error ? <Text style={{ color: 'red', marginBottom: 8 }}>{error}</Text> : null}
-      {loading ? <ActivityIndicator /> : (
+      {error ? (
+        <Text style={{ color: "red", marginBottom: 8 }}>{error}</Text>
+      ) : null}
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
         <TouchableOpacity style={styles.signinButton} onPress={handleSubmit}>
           <Text style={styles.signText}>Entrar</Text>
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={() => router.push('/cadastro')}>
+      <TouchableOpacity onPress={() => router.push("/cadastro")}>
         <Text style={styles.cadastroLink}>Não tem conta? Cadastre-se</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -88,10 +110,10 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000002"
+    backgroundColor: "#000002",
   },
   logo: {
-    width: '80%',
+    width: "80%",
     height: 200,
     marginTop: 100,
     alignSelf: "center",

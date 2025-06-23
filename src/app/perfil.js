@@ -5,6 +5,7 @@ import {
   View,
   Pressable,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
@@ -24,28 +25,39 @@ export default function perfil() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [produtos, setProdutos] = useState([]);
+  const [isLoadingProdutos, setIsLoadingProdutos] = useState(true);
+
   useEffect(() => {
-    // Busca os dados do usuário salvos no AsyncStorage após o login
     const fetchUser = async () => {
       try {
         const userStr = await AsyncStorage.getItem("user");
-        const cadastrosStr = await AsyncStorage.getItem("cadastros");
-        if (userStr && cadastrosStr) {
-          const user = JSON.parse(userStr);
-          const cadastros = JSON.parse(cadastrosStr);
-          const cadastro = cadastros.find((c) => c.email === user.email);
-          if (cadastro) {
-            setUser(cadastro);
-            console.log("Usuário logado:", cadastro); // Adicione esta linha
-          }
+        if (userStr) {
+          const userObj = JSON.parse(userStr);
+          const dados = userObj.user ? userObj.user : userObj;
+          setUser(dados);
+          console.log("Usuário logado:", dados);
         }
       } catch (err) {
-        console.error("Erro ao buscar usuário/cadastro:", err);
+        console.error("Erro ao buscar usuário:", err);
       } finally {
         setLoading(false);
       }
     };
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    fetch("https://localhost:8000/produtos/")
+      .then((response) => {
+        if (!response.ok) throw new Error("Erro ao buscar produtos");
+        return response.json();
+      })
+      .then((data) => {
+        if (data.produtos) setProdutos(data.produtos);
+      })
+      .catch((error) => console.error("Erro:", error))
+      .finally(() => setIsLoadingProdutos(false));
   }, []);
 
   if (loading) {
@@ -168,15 +180,16 @@ export default function perfil() {
         }}>
         A escolha certa para o seu paladar!
       </Text>
-      <View
-        style={{
-          width: "100%",
-          flex: 1,
-          paddingBottom: 20,
-          alignItems: "center",
-        }}>
-        <Galeria />
-      </View>
+      {/* Galeria apenas com imagens, scroll vertical */}
+      <ScrollView style={{ width: "100%", maxHeight: 400, marginBottom: 20 }}>
+        <View style={styles.galeriaContainer}>
+          <Galeria
+            produtos={produtos}
+            loading={isLoadingProdutos}
+            somenteImagens
+          />
+        </View>
+      </ScrollView>
       <Footer />
       <StatusBar style="auto" />
     </View>
@@ -255,5 +268,17 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontSize: 16,
+  },
+  galeriaContainer: {
+    width: "100%",
+    marginTop: 10,
+    marginBottom: 20,
+    alignItems: "center",
+    height: 180, // ajuste conforme o tamanho das imagens
+  },
+  galeriaInfo: {
+    fontSize: 18,
+    color: "white",
+    marginTop: 20,
   },
 });

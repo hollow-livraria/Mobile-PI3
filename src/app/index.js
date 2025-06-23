@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 import Header from "../components/Header";
 import Banner from "../components/Banner";
@@ -28,8 +28,16 @@ export default function App() {
     <View style={styles.container}>
       <Header />
       <Banner />
-      <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
-      <Galeria produtos={produtos} loading={isLoading} />
+      <ScrollView
+        style={{ width: "100%" }}
+        contentContainerStyle={{
+          alignItems: "center",
+          paddingBottom: 100, // ajuste conforme a altura do seu Footer
+        }}
+      >
+        <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
+        <Galeria produtos={produtos} loading={isLoading} />
+      </ScrollView>
       <Footer />
       <StatusBar style="auto" />
     </View>
