@@ -1,11 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import Footer from "../components/Footer";
 import OrderConfirmationCard from "../components/orderConfirmationCard";
 
 import Octicons from "@expo/vector-icons/Octicons";
+
+import { useRouter } from "expo-router";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function orderConfirmation() {
   const params = useLocalSearchParams();
@@ -14,6 +18,34 @@ export default function orderConfirmation() {
   const frete = Number((total * 0.05).toFixed(2));
   const desconto = 0; // ajuste se quiser aplicar cupom
   const totalFinal = total + frete - desconto;
+
+  const router = useRouter();
+
+  const salvarHistorico = async () => {
+    const userStr = await AsyncStorage.getItem("user");
+    const userObj = JSON.parse(userStr);
+    const cpf = userObj.cpf || userObj.user?.cpf;
+
+    // Buscar endereços do usuário pelo CPF
+    const res = await fetch(
+      `https://192.168.0.10:8000/enderecos?usuarioCpf=${cpf}`
+    );
+    const data = await res.json();
+    // Pegue o primeiro endereço (ou defina uma lógica para endereço principal)
+    const enderecoPrincipal = data[0];
+
+    const historicoKey = `historico:${cpf}`;
+    const historicoStr = await AsyncStorage.getItem(historicoKey);
+    let historico = historicoStr ? JSON.parse(historicoStr) : [];
+
+    historico.push({
+      data: new Date().toISOString(),
+      produtos: produtos, // ou produtosNoCarrinho
+      endereco: enderecoPrincipal, // Salve o objeto endereço completo!
+    });
+
+    await AsyncStorage.setItem(historicoKey, JSON.stringify(historico));
+  };
 
   return (
     <View style={styles.container}>
@@ -24,8 +56,7 @@ export default function orderConfirmation() {
             color: "white",
             fontSize: 25,
             alignSelf: "center",
-          }}
-        >
+          }}>
           Confirmação do pedido
         </Text>
         <View style={styles.envioBody}>
@@ -50,8 +81,7 @@ export default function orderConfirmation() {
           </View>
           <ScrollView
             style={{ maxHeight: 300 }}
-            contentContainerStyle={{ width: 390 }}
-          >
+            contentContainerStyle={{ width: 390 }}>
             {produtos.map((produto, idx) => (
               <OrderConfirmationCard key={idx} produto={produto} />
             ))}
@@ -63,8 +93,7 @@ export default function orderConfirmation() {
               fontSize: 25,
               color: "white",
               alignSelf: "flex-start",
-            }}
-          >
+            }}>
             Cupom
           </Text>
           <View style={styles.cupomBody}>
@@ -74,8 +103,7 @@ export default function orderConfirmation() {
                 flex: 1,
                 textAlign: "left",
                 paddingLeft: 15,
-              }}
-            >
+              }}>
               CHIKAMSO-20-OFF
             </Text>
             <Text
@@ -85,8 +113,7 @@ export default function orderConfirmation() {
                 borderLeftWidth: 1,
                 borderLeftColor: "grey",
                 paddingRight: 15,
-              }}
-            >
+              }}>
               Aplicar
             </Text>
           </View>
@@ -95,8 +122,7 @@ export default function orderConfirmation() {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-              }}
-            >
+              }}>
               <Text style={{ color: "white", fontSize: 20 }}>Subtotal</Text>
               <Text style={{ color: "white", fontSize: 20 }}>
                 R$ {total.toFixed(2)}
@@ -106,8 +132,7 @@ export default function orderConfirmation() {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-              }}
-            >
+              }}>
               <Text style={{ color: "white", fontSize: 20 }}>Frete</Text>
               <Text style={{ color: "white", fontSize: 20 }}>
                 R$ {frete.toFixed(2)}
@@ -117,8 +142,7 @@ export default function orderConfirmation() {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-              }}
-            >
+              }}>
               <Text style={{ color: "white", fontSize: 20 }}>Desconto</Text>
               <Text style={{ color: "white", fontSize: 20 }}>
                 -R$ {desconto.toFixed(2)}
@@ -128,18 +152,23 @@ export default function orderConfirmation() {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-              }}
-            >
+              }}>
               <Text style={{ color: "white", fontSize: 20 }}>Total</Text>
               <Text style={{ color: "white", fontSize: 20 }}>
                 R$ {totalFinal.toFixed(2)}
               </Text>
             </View>
           </View>
-          <View style={styles.finalizar}>
-            <Text>Finalizar</Text>
-            <Octicons name="arrow-right" size={24} color="black" />
-          </View>
+          <Pressable
+            onPress={async () => {
+              await salvarHistorico();
+              router.push("/orderHistory");
+            }}>
+            <View style={styles.finalizar}>
+              <Text>Finalizar</Text>
+              <Octicons name="arrow-right" size={24} color="black" />
+            </View>
+          </Pressable>
         </View>
       </ScrollView>
       <Footer />
@@ -203,7 +232,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   finalizar: {
-    width: "90%",
+    width: "100%",
     height: 50,
     backgroundColor: "#E1D5C2",
     borderRadius: 15,
@@ -212,5 +241,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     marginBottom: 30,
+    gap: 20,
   },
 });
