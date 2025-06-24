@@ -227,6 +227,10 @@ export default function orderConfirmation() {
           </View>
           <Pressable
             onPress={async () => {
+              if (!produtos || produtos.length === 0) {
+                alert("Não há produtos no pedido!");
+                return;
+              }
               await salvarHistorico();
               // Limpa o carrinho do usuário após finalizar o pedido
               const userStr = await AsyncStorage.getItem("user");

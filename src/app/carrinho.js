@@ -84,16 +84,25 @@ export default function carrinho() {
           paddingHorizontal: 30,
           alignSelf: "center",
           marginVertical: 20,
+          opacity: produtos.length === 0 ? 0.5 : 1, // botão mais claro se vazio
         }}
-        onPress={() =>
+        disabled={produtos.length === 0}
+        onPress={() => {
+          if (produtos.length === 0) {
+            Alert.alert(
+              "Carrinho vazio",
+              "Adicione produtos antes de finalizar a compra."
+            );
+            return;
+          }
           router.push({
             pathname: "/orderConfirmation",
             params: {
               produtos: JSON.stringify(produtos),
               total: total,
             },
-          })
-        }>
+          });
+        }}>
         <Text style={{ color: "#3B2C1A", fontWeight: "bold", fontSize: 18 }}>
           Finalizar compra (Total: R$ {total.toFixed(2)})
         </Text>
