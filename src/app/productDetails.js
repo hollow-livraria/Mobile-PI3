@@ -45,8 +45,7 @@ export default function productDetails() {
       .then((data) => {
         const produtoData = data.produto || data;
         setProduto(produtoData);
-        // Não setar comentários aqui
-        console.log("Produto carregado:", produtoData); // <-- Adicionado aqui
+        console.log("Produto carregado:", produtoData);
       })
       .catch((err) => {
         console.error("Erro no fetch:", err);
@@ -59,9 +58,7 @@ export default function productDetails() {
     fetch(`https://localhost:8000/avaliacao`)
       .then((res) => res.json())
       .then((data) => {
-        // data pode ser { avaliacoes: [...] } ou apenas um array
         const avaliacoes = data.avaliacoes || data;
-        // Filtra só as avaliações do produto atual
         const comentariosDoProduto = avaliacoes.filter(
           (a) => String(a.idProduto) === String(id)
         );
@@ -70,7 +67,6 @@ export default function productDetails() {
       .catch((err) => console.error("Erro ao buscar comentários:", err));
   }, [id]);
 
-  // No topo do seu componente
   useEffect(() => {
     fetch("https://localhost:8000/users")
       .then((res) => res.json())

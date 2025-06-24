@@ -92,7 +92,7 @@ export default function orderConfirmation() {
           </View>
           <ScrollView
             style={{ maxHeight: 300 }}
-            contentContainerStyle={{ width: 385 }}>
+            contentContainerStyle={{ width: 385, gap: 10 }}>
             {produtos.map((produto, idx) => (
               <OrderConfirmationCard key={idx} produto={produto} />
             ))}

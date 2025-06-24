@@ -140,16 +140,6 @@ export default function vitrine() {
             dropDownDirection="AUTO"
             zIndex={1000}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginLeft: 12,
-            }}>
-            <Octicons name="filter" size={26} color="white" />
-            <Text style={styles.filtroText}>Filtro</Text>
-          </View>
         </View>
         <View style={styles.galeriaWrapper}>
           <Galeria produtos={produtosFiltrados} />
@@ -183,6 +173,5 @@ const styles = StyleSheet.create({
   },
   galeriaWrapper: {
     width: "100%",
-    // Remova flex: 1 e overflow: "hidden"
   },
 });
