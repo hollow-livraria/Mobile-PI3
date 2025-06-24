@@ -75,10 +75,11 @@ export default function productDetails() {
     fetch("https://localhost:8000/users")
       .then((res) => res.json())
       .then((data) => {
-        // Garante que usuarios sempre será um array
-        if (Array.isArray(data)) setUsuarios(data);
+        if (Array.isArray(data.usuarios)) setUsuarios(data.usuarios);
         else if (Array.isArray(data.users)) setUsuarios(data.users);
+        else if (Array.isArray(data)) setUsuarios(data);
         else setUsuarios([]);
+        console.log("Usuários carregados:", data);
       })
       .catch((err) => console.error("Erro ao buscar usuários:", err));
   }, []);
@@ -449,9 +450,7 @@ export default function productDetails() {
               <Comment
                 key={c.idAvaliacao}
                 comentario={c}
-                nomeUsuario={
-                  usuario ? usuario.nome : `Usuário: ${c.usuarioCpf}`
-                }
+                nomeUsuario={usuario ? usuario.nome : "Usuário desconhecido"}
               />
             );
           })}
