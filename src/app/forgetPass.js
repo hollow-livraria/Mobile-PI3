@@ -30,7 +30,7 @@ export default function ForgetPassword() {
 
         <TouchableOpacity
           style={styles.signinBtn}
-          onPress={() => alert("email enviado")}>
+          onPress={() => router.push("/verifyEmail")}>
           <Text style={styles.signText}>Enviar e-mail</Text>
         </TouchableOpacity>
       </View>
