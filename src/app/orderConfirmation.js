@@ -78,7 +78,7 @@ export default function orderConfirmation() {
             Frete Grátis
           </Text>
           <Text style={{ color: "white", fontSize: 12 }}>
-            Entrega prevista para 07/07/2025 - 10/07/2025
+            Entrega prevista para 27/06/2025 - 03/07/2025
           </Text>
         </View>
         <View style={styles.pedido}>
@@ -92,7 +92,7 @@ export default function orderConfirmation() {
           </View>
           <ScrollView
             style={{ maxHeight: 300 }}
-            contentContainerStyle={{ width: 390 }}>
+            contentContainerStyle={{ width: 385 }}>
             {produtos.map((produto, idx) => (
               <OrderConfirmationCard key={idx} produto={produto} />
             ))}
@@ -228,6 +228,12 @@ export default function orderConfirmation() {
           <Pressable
             onPress={async () => {
               await salvarHistorico();
+              // Limpa o carrinho do usuário após finalizar o pedido
+              const userStr = await AsyncStorage.getItem("user");
+              const userObj = JSON.parse(userStr);
+              const cpf = userObj.cpf || userObj.user?.cpf;
+              const cartKey = `cart:${cpf}`;
+              await AsyncStorage.removeItem(cartKey);
               router.push("/orderHistory");
             }}>
             <View style={styles.finalizar}>

@@ -304,7 +304,7 @@ export default function productDetails() {
             </Text>
             <Text style={{ color: "white" }}>Frete gratis</Text>
             <Text style={{ color: "white" }}>
-              Entrega prevista para 07/07/2004 - 14/07/2004
+              Entrega prevista para 27/06/2025 - 03/07/2025
             </Text>
           </View>
           <Pressable
