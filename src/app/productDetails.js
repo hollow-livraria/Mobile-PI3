@@ -182,21 +182,6 @@ export default function productDetails() {
     <View style={{ flex: 1, backgroundColor: "#000002" }}>
       <ScrollView contentContainerStyle={styles.container}>
         <Header />
-        {/* Botão Voltar */}
-        <Pressable
-          onPress={() => router.back()}
-          style={{
-            position: "absolute",
-            top: 40,
-            left: 20,
-            zIndex: 10,
-            backgroundColor: "#E1D5C2",
-            borderRadius: 20,
-            padding: 8,
-            elevation: 4,
-          }}>
-          <MaterialIcons name="arrow-back" size={28} color="#3B2C1A" />
-        </Pressable>
         <View style={styles.imageHolder}>
           <Image
             source={{

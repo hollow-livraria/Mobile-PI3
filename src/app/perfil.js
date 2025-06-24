@@ -144,22 +144,30 @@ export default function perfil() {
           Ver todos os pedidos
         </Text>
         <View style={styles.pedidosIcons}>
-          <View style={styles.icon}>
+          <Pressable
+            style={styles.icon}
+            onPress={() => router.push("/orderHistory")}>
             <Ionicons name="wallet-outline" size={40} color="white" />
-            <Text style={{ color: "white", fontSize: "12" }}>A pagar</Text>
-          </View>
-          <View style={styles.icon}>
+            <Text style={{ color: "white", fontSize: 12 }}>A pagar</Text>
+          </Pressable>
+          <Pressable
+            style={styles.icon}
+            onPress={() => router.push("/orderHistory")}>
             <Feather name="box" size={40} color="white" />
-            <Text style={{ color: "white", fontSize: "12" }}>A preparar</Text>
-          </View>
-          <View style={styles.icon}>
+            <Text style={{ color: "white", fontSize: 12 }}>A preparar</Text>
+          </Pressable>
+          <Pressable
+            style={styles.icon}
+            onPress={() => router.push("/orderHistory")}>
             <Ionicons name="car-outline" size={40} color="white" />
-            <Text style={{ color: "white", fontSize: "12" }}>A caminho</Text>
-          </View>
-          <View style={styles.icon}>
+            <Text style={{ color: "white", fontSize: 12 }}>A caminho</Text>
+          </Pressable>
+          <Pressable
+            style={styles.icon}
+            onPress={() => router.push("/orderHistory")}>
             <Ionicons name="star-outline" size={40} color="white" />
-            <Text style={{ color: "white", fontSize: "12" }}>A avaliar</Text>
-          </View>
+            <Text style={{ color: "white", fontSize: 12 }}>A avaliar</Text>
+          </Pressable>
         </View>
       </View>
       <View style={styles.abaAjuda}>

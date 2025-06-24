@@ -95,20 +95,6 @@ export default function orderHistory() {
             <Text style={styles.nomePerfil}>{user?.nome || "Usuário"}</Text>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight: 20,
-          }}>
-          <Octicons
-            name="heart"
-            size={25}
-            color="white"
-            style={{ marginRight: 15 }}
-          />
-          <Feather name="shopping-cart" size={25} color="white" />
-        </View>
       </View>
       <View style={styles.pedidos}>
         <Text style={{ color: "#E1D5C2", fontSize: 28 }}>
@@ -150,13 +136,17 @@ export default function orderHistory() {
                     </View>
                   </View>
                 ))}
-                {/* Removido temporariamente o texto sobre endereço */}
-                {/* <Text style={styles.endereco}>
-                  Entregar em:{" "}
-                  {pedido.endereco
-                    ? `${pedido.endereco.rua}, ${pedido.endereco.numero} - ${pedido.endereco.bairro}, ${pedido.endereco.cidade} - ${pedido.endereco.estado}, ${pedido.endereco.cep}`
-                    : "Endereço não cadastrado"}
-                </Text> */}
+                {/* Mostra o total da compra */}
+                <Text
+                  style={{
+                    color: "#E1D5C2",
+                    fontSize: 18,
+                    marginTop: 10,
+                    alignSelf: "flex-end",
+                  }}>
+                  Total da compra: R${" "}
+                  {pedido.total ? Number(pedido.total).toFixed(2) : "0.00"}
+                </Text>
               </View>
             ))
         )}

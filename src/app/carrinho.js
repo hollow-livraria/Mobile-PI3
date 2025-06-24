@@ -93,7 +93,7 @@ export default function carrinho() {
             pathname: "/orderConfirmation",
             params: {
               produtos: JSON.stringify(produtos),
-              total: total.toFixed(2),
+              total: total, // <-- assim!
             },
           })
         }>

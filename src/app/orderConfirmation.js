@@ -46,18 +46,24 @@ export default function orderConfirmation() {
       `https://localhost:8000/enderecos?usuarioCpf=${cpf}`
     );
     const data = await res.json();
-    // Pegue o primeiro endereço (ou defina uma lógica para endereço principal)
     const enderecoPrincipal = data[0];
 
     const historicoKey = `historico:${cpf}`;
     const historicoStr = await AsyncStorage.getItem(historicoKey);
     let historico = historicoStr ? JSON.parse(historicoStr) : [];
 
+    // Adiciona o novo pedido ao final
     historico.push({
       data: new Date().toISOString(),
-      produtos: produtos, // ou produtosNoCarrinho
-      endereco: enderecoPrincipal, // Salve o objeto endereço completo!
+      produtos: produtos,
+      endereco: enderecoPrincipal,
+      total: totalFinal,
     });
+
+    // Mantém apenas os 3 pedidos mais recentes
+    if (historico.length > 3) {
+      historico = historico.slice(-3);
+    }
 
     await AsyncStorage.setItem(historicoKey, JSON.stringify(historico));
   };
