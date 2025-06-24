@@ -13,28 +13,23 @@ export default function favoritos() {
     const fetchFavoritos = async () => {
       setIsLoading(true);
       try {
-        // 1. Pega o usuário logado
         const userStr = await AsyncStorage.getItem("user");
         if (!userStr) return setProdutos([]);
-        const userObj = JSON.parse(userStr);
+        const userObj = JSON.parse(userStr);                   //pega o user
         const cpf = userObj.cpf || userObj.user?.cpf;
 
-        // 2. Busca todos os favoritos
         const favRes = await fetch("https://localhost:8000/favoritos");
-        const favData = await favRes.json();
+        const favData = await favRes.json();                              //olha os favoritos
         const favoritos = favData.favoritos || [];
 
-        // 3. Filtra só os favoritos do usuário logado
-        const meusFavoritos = favoritos.filter((f) => f.usuarioCpf === cpf);
+        const meusFavoritos = favoritos.filter((f) => f.usuarioCpf === cpf);  //pega so os fav do user
 
-        // 4. Busca todos os produtos
         const prodRes = await fetch("https://localhost:8000/produtos/");
-        const prodData = await prodRes.json();
+        const prodData = await prodRes.json();                            //pega todos produtos            
         const todosProdutos = prodData.produtos || [];
 
-        // 5. Filtra produtos que estão nos favoritos do usuário
         const produtosFavoritos = todosProdutos.filter((prod) =>
-          meusFavoritos.some(
+          meusFavoritos.some(                                                       //pega os produtos que sao favoritos do user
             (fav) => String(fav.idProduto) === String(prod.idProduto || prod.id)
           )
         );
@@ -60,7 +55,7 @@ export default function favoritos() {
         style={{ width: "100%" }}
         contentContainerStyle={{
           alignItems: "center",
-          paddingBottom: 100, // ajuste esse valor conforme a altura do seu Footer
+          paddingBottom: 100, 
         }}
       >
         <Galeria produtos={produtos} loading={isLoading} />

@@ -15,7 +15,7 @@ export default function vitrine() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(""); // Estado inicial sem filtro
+  const [value, setValue] = useState("");
   const [items, setItems] = useState([
     { label: "Menor Preço", value: "menor-preco" },
     { label: "Maior Preço", value: "maior-preco" },
@@ -39,7 +39,6 @@ export default function vitrine() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Ordenação baseada no dropdown
   useEffect(() => {
     let ordenados = [...produtos];
     switch (value) {
@@ -56,7 +55,6 @@ export default function vitrine() {
         ordenados.sort((a, b) => (b.nome || "").localeCompare(a.nome || ""));
         break;
       default:
-        // Sem filtro: mostra todos os produtos na ordem original
         break;
     }
     setProdutosFiltrados(ordenados);

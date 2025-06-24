@@ -9,7 +9,6 @@ import Octicons from "react-native-vector-icons/Octicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function CartCard({ produto, onUpdate }) {
-  // Função para atualizar quantidade
   const updateQuantidade = async (delta) => {
     const userStr = await AsyncStorage.getItem("user");
     if (!userStr) return;
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     maxWidth: "70%",
-    minWidth: 0, // importante para truncar corretamente
+    minWidth: 0, 
   },
   nome: {
     color: "#E1D5C2",

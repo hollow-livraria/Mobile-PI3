@@ -46,6 +46,7 @@ export default function productDetails() {
         const produtoData = data.produto || data;
         setProduto(produtoData);
         // Não setar comentários aqui
+        console.log("Produto carregado:", produtoData); // <-- Adicionado aqui
       })
       .catch((err) => {
         console.error("Erro no fetch:", err);
@@ -112,13 +113,12 @@ export default function productDetails() {
   const increment = () => setQuantity((q) => q + 1);
   const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
-  // Função para enviar avaliação
   const enviarAvaliacao = () => {
     fetch("https://localhost:8000/avaliacao", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        usuarioCpf: "12345678901", // Troque pelo CPF do usuário logado
+        usuarioCpf: user?.cpf || user?.user?.cpf,
         idProduto: Number(id),
         avaliacao: reviewNota,
         conteudo: reviewText,
@@ -130,7 +130,6 @@ export default function productDetails() {
         setModalVisible(false);
         setReviewText("");
         setReviewNota(0);
-        // Atualiza comentários após enviar
         fetch(`https://localhost:8000/avaliacao`)
           .then((res) => res.json())
           .then((data) => {
@@ -149,7 +148,6 @@ export default function productDetails() {
   const handleFavoritar = async () => {
     if (!user || !produto) return;
     if (!isFavorito) {
-      // Adicionar favorito
       await fetch("https://localhost:8000/favoritos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -164,7 +162,6 @@ export default function productDetails() {
           setIdFavorito(data.favorito?.idFavorito);
         });
     } else if (idFavorito) {
-      // Remover favorito
       await fetch(`https://localhost:8000/favoritos/${idFavorito}`, {
         method: "DELETE",
       }).then(() => {
@@ -249,17 +246,14 @@ export default function productDetails() {
                 const cartStr = await AsyncStorage.getItem(cartKey);
                 if (cartStr) cart = JSON.parse(cartStr);
               } catch {}
-              // Verifica se já existe
               const idx = cart.findIndex(
                 (p) =>
                   String(p.idProduto || p.id) ===
                   String(produto.idProduto || produto.id)
               );
               if (idx !== -1) {
-                // Já existe, soma quantidade
                 cart[idx].quantidade = (cart[idx].quantidade || 1) + quantity;
               } else {
-                // Novo produto
                 cart.push({ ...produto, quantidade: quantity });
               }
               await AsyncStorage.setItem(cartKey, JSON.stringify(cart));
@@ -312,7 +306,6 @@ export default function productDetails() {
               Entrega prevista para 07/07/2004 - 14/07/2004
             </Text>
           </View>
-          {/* Botão de informações adicionais */}
           <Pressable
             style={styles.additionalDetails}
             onPress={() => setShowInfo((v) => !v)}>
@@ -335,6 +328,7 @@ export default function productDetails() {
             <Text style={styles.infoText}>
               {produto.classificacao &&
                 `Classificação: ${produto.classificacao}\n`}
+              {produto.descricao && `Descrição: ${produto.descricao}\n`}
               {produto.categoria && `Categoria: ${produto.categoria}\n`}
               {produto.regiao && `Região: ${produto.regiao}\n`}
               {produto.gustativo && `Gustativo: ${produto.gustativo}\n`}

@@ -41,28 +41,18 @@ export default function orderConfirmation() {
     const userObj = JSON.parse(userStr);
     const cpf = userObj.cpf || userObj.user?.cpf;
 
-    // Buscar endereços do usuário pelo CPF
-    const res = await fetch(
-      `https://localhost:8000/enderecos?usuarioCpf=${cpf}`
-    );
-    const data = await res.json();
-    const enderecoPrincipal = data[0];
-
     const historicoKey = `historico:${cpf}`;
     const historicoStr = await AsyncStorage.getItem(historicoKey);
     let historico = historicoStr ? JSON.parse(historicoStr) : [];
 
-    // Adiciona o novo pedido ao final
     historico.push({
       data: new Date().toISOString(),
-      produtos: produtos,
-      endereco: enderecoPrincipal,
+      produtos: produtos, //novos pedidos vao pra baixo da lista
       total: totalFinal,
     });
 
-    // Mantém apenas os 3 pedidos mais recentes
     if (historico.length > 3) {
-      historico = historico.slice(-3);
+      historico = historico.slice(-3); //deixa 3 pedido só, pra nao encher mt o historico
     }
 
     await AsyncStorage.setItem(historicoKey, JSON.stringify(historico));
@@ -154,7 +144,6 @@ export default function orderConfirmation() {
                   const res = await fetch(BACKEND_URL);
                   if (!res.ok) throw new Error("Falha ao validar cupom");
                   const data = await res.json();
-                  // O backend retorna { cupons: [...] }
                   const validCoupon = Array.isArray(data.cupons)
                     ? data.cupons.find(
                         (c) =>
@@ -165,7 +154,7 @@ export default function orderConfirmation() {
                     setCupomInfo(validCoupon);
                     const descontoValor =
                       total * ((validCoupon.desconto || 0) / 100);
-                    setDesconto(descontoValor); // ou validCoupon.percentual, conforme backend
+                    setDesconto(descontoValor);
                   } else {
                     setDesconto(0);
                     setCupomErro("Cupom inválido");
@@ -191,7 +180,7 @@ export default function orderConfirmation() {
           ) : null}
           {desconto > 0 && (
             <Text style={{ color: "#E1D5C2", marginLeft: 20, marginTop: 5 }}>
-              Cupom aplicado: {cupomInfo?.codigo} (-{desconto}%)
+              Cupom aplicado: {cupomInfo?.codigo} (-{cupomInfo?.desconto || 0}%)
             </Text>
           )}
           <View style={styles.prices}>

@@ -34,7 +34,6 @@ export default function orderHistory() {
           const dados = userObj.user ? userObj.user : userObj;
           setUser(dados);
 
-          // Buscar histórico
           const cpf = dados.cpf;
           const historicoKey = `historico:${cpf}`;
           const historicoStr = await AsyncStorage.getItem(historicoKey);
@@ -42,7 +41,6 @@ export default function orderHistory() {
             const historicoArr = JSON.parse(historicoStr);
             setHistorico(historicoArr);
 
-            // Buscar todos os endereços dos pedidos usando fetch
             const enderecosTemp = {};
             await Promise.all(
               historicoArr.map(async (pedido) => {
@@ -136,7 +134,6 @@ export default function orderHistory() {
                     </View>
                   </View>
                 ))}
-                {/* Mostra o total da compra */}
                 <Text
                   style={{
                     color: "#E1D5C2",

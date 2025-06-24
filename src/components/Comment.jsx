@@ -11,7 +11,6 @@ import Octicons from '@expo/vector-icons/Octicons';
 export default function Comment({ comentario, nomeUsuario }) {
   const [expanded, setExpanded] = useState(false);
 
-  // Exemplo de avatar, pode trocar por um campo real se existir
   const avatarUrl = "https://github.com/hollow-livraria.png";
   const nome = nomeUsuario || "Anônimo";
   const data = comentario.dataCriacao ? new Date(comentario.dataCriacao).toLocaleDateString() : "";

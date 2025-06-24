@@ -103,6 +103,9 @@ export default function Login() {
       <TouchableOpacity onPress={() => router.push("/cadastro")}>
         <Text style={styles.cadastroLink}>Não tem conta? Cadastre-se</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/forgetPass")}>
+        <Text style={styles.cadastroLink}>Esqueceu a senha?</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }

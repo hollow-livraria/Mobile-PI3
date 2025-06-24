@@ -22,7 +22,6 @@ export default function carrinho() {
 
   const fetchCart = async () => {
     const userStr = await AsyncStorage.getItem("user");
-    if (!userStr) return setProdutos([]);
     const userObj = JSON.parse(userStr);
     const cpf = userObj.cpf || userObj.user?.cpf;
     const cartKey = `cart:${cpf}`;
@@ -30,7 +29,6 @@ export default function carrinho() {
     let cart = [];
     if (cartStr) cart = JSON.parse(cartStr);
     setProdutos(cart);
-    // Calcula total
     let soma = 0;
     cart.forEach((p) => {
       const preco = Number(p.preco) || 0;
@@ -78,7 +76,6 @@ export default function carrinho() {
         }}>
         A escolha certa para o seu paladar!
       </Text>
-      {/* Botão de finalizar com total */}
       <TouchableOpacity
         style={{
           backgroundColor: "#E1D5C2",
@@ -93,7 +90,7 @@ export default function carrinho() {
             pathname: "/orderConfirmation",
             params: {
               produtos: JSON.stringify(produtos),
-              total: total, // <-- assim!
+              total: total,
             },
           })
         }>

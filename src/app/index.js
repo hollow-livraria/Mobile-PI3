@@ -32,7 +32,7 @@ export default function App() {
         style={{ width: "100%" }}
         contentContainerStyle={{
           alignItems: "center",
-          paddingBottom: 100, // ajuste conforme a altura do seu Footer
+          paddingBottom: 100, 
         }}>
         <Text style={styles.galeriaInfo}>Nossos produtos mais vendidos</Text>
         <Galeria produtos={produtos} loading={isLoading} />
