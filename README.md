@@ -5,6 +5,7 @@ Aplicativo mobile de e-commerce de vinhos desenvolvido em React Native com Expo.
 ## 📱 Sobre o Projeto
 
 O Mobile-PI3 é um aplicativo de vendas de vinhos, onde usuários podem:
+
 - Navegar por uma vitrine de produtos
 - Visualizar detalhes de cada vinho
 - Adicionar produtos ao carrinho
@@ -26,6 +27,7 @@ O Mobile-PI3 é um aplicativo de vendas de vinhos, onde usuários podem:
 - [@react-native-picker/picker](https://github.com/react-native-picker/picker)
 
 ## 📂 Estrutura de Pastas
+
 . ├── assets/ # Imagens e fontes ├── src/ │ ├── app/ # Telas do aplicativo │ └── components/ # Componentes reutilizáveis ├── .expo/ # Configurações do Expo (não versionar) ├── app.config.js # Configuração do Expo ├── package.json # Dependências e scripts └── .gitignore
 
 ## ⚙️ Scripts Disponíveis
@@ -38,9 +40,12 @@ O Mobile-PI3 é um aplicativo de vendas de vinhos, onde usuários podem:
 ## 🛠️ Como Rodar o Projeto
 
 1. **Clone o repositório:**
+
    ```sh
    git clone <url-do-repo>
    cd mobile-pi3
+
+   ```
 
 2. Instale as dependências
    npm install
